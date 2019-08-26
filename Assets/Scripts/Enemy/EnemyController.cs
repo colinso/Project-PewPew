@@ -70,10 +70,10 @@ public partial class EnemyController : MonoBehaviour
 
     protected virtual void OnCollisionEnter2D(Collision2D other)
     {
-        stopMovement = true;
-        stopPosition = transform.position;
         if (other.gameObject == player)
         {
+            stopMovement = true;
+            stopPosition = transform.position;
             inflictDamage();
             Debug.Log(player.GetComponent<PlayerController>().health);
         }
