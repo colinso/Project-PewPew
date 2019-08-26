@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   rb: {fileID: 114930042}
+  stopMovement: 0
 --- !u!50 &114930042
 Rigidbody2D:
   serializedVersion: 4
@@ -346,6 +347,8 @@ MonoBehaviour:
   distanceFromPlayer: 0
   rb: {fileID: 602091792}
   player: {fileID: 114930040}
+  stopMovement: 0
+  type: 0
 --- !u!212 &602091794
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -435,6 +438,36 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &680440227
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 680440228}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &680440228
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 680440227}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1129331696}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1129331693
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +480,7 @@ GameObject:
   - component: {fileID: 1129331695}
   - component: {fileID: 1129331694}
   m_Layer: 0
-  m_Name: Gun
+  m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,9 +495,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1129331693}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e211fcc318d24400996a19114a3e1b13, type: 3}
+  m_Script: {fileID: 11500000, guid: 0cf46934433744345935f0000c0aae11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firePoint: {fileID: 680440228}
+  player: {fileID: 114930040}
+  projectilePrefab: {fileID: 8970546750298804746, guid: 4216e95bdc1844493a19110d02e47c25,
+    type: 3}
 --- !u!212 &1129331695
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -511,7 +548,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1129331696
@@ -524,7 +561,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.5215006, y: -0.5080281, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 680440228}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

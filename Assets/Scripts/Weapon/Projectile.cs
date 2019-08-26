@@ -13,7 +13,9 @@ public class Projectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        moveDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
+        var mousePos = Input.mousePosition;
+        mousePos.z = 10;
+        moveDirection = (Camera.main.ScreenToWorldPoint(mousePos) - transform.position);
         moveDirection.z = 0;
         moveDirection.Normalize();
         //rb.velocity = transform.right * speed;
@@ -22,7 +24,6 @@ public class Projectile : MonoBehaviour
     private void Update()
     {
         transform.position = transform.position + moveDirection * speed * Time.deltaTime;
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
