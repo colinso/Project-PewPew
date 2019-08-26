@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+    [HideInInspector]
     public GameObject player;
+    public static CameraMovement Instance { set; get; }
 
-    // Update is called once per frame
+    private void Awake()
+    {
+        Instance = this;
+    }
     void Update()
     {
-        transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);
+        if(player)
+            transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);
     }
 }
