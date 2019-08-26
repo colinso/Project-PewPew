@@ -38,6 +38,11 @@ public partial class EnemyController : MonoBehaviour
     public void takeDamage(int damageTaken)
     {
         health -= damageTaken;
+
+        if (health <= 0)
+        {
+            die();
+        }
     }
 
     public void inflictDamage()
@@ -77,5 +82,10 @@ public partial class EnemyController : MonoBehaviour
     protected virtual void OnCollisionExit2D(Collision2D other)
     {
         stopMovement = false;
+    }
+
+    void die()
+    {
+        Destroy(gameObject);
     }
 }
