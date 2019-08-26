@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
 
     public Rigidbody2D rb;
+    private Vector2 stopPosition;
+    public bool stopMovement;
 
     private Vector2 movement;
     // Start is called before the first frame update
@@ -25,5 +27,17 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+    }
+
+    protected virtual void Move()
+    {
+        if (stopMovement == true)
+        {
+            transform.position = stopPosition;
+        }
+        else
+        {
+            rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        }
     }
 }

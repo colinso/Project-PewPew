@@ -25,10 +25,24 @@ public class PlayerController : MonoBehaviour
 
     public void takeDamage(int damageTaken)
     {
-        health -= damageTaken;
+        if(health - damageTaken <= 0)
+        {
+            health = 0;
+        }
+        else
+        {
+            health -= damageTaken;
+        }
     }
+
     public void inflictDamage(int damageInflicted)
     {
         
     }
+
+    public bool isDead()
+    {
+        return health == 0;
+    }
+
 }
