@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     public Rigidbody2D rb;
     public int damange = 25;
     public float speed = 20f;
-    public string type;
+    public enum type { Electric, Fire, Freeze, Kinetic};
 
     // Start is called before the first frame update
     void Start()

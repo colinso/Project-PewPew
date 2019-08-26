@@ -7,7 +7,7 @@ public class WeaponController : MonoBehaviour
     public Transform firePoint;
     public GameObject player;
     public GameObject projectilePrefab;
-
+    
 
     // Start is called before the first frame update
     void Start()
