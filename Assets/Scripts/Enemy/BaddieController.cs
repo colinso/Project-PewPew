@@ -30,19 +30,7 @@ public class BaddieController: EnemyController
         if(col.gameObject == player)
         {
             actions.MeleeAttack(damage);
-            //Attack();
         }
     }
 
-    //protected virtual void Attack()
-    //{
-    //    attackTimer += Time.deltaTime;
-    //    if(attackTimer >= cooldown || firstAttack)
-    //    {
-    //        inflictDamage();
-    //        Debug.Log(player.GetComponent<PlayerController>().health);
-    //        attackTimer = 0f;
-    //        firstAttack = false;
-    //    }
-    //}
 }

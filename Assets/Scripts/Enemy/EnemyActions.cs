@@ -10,6 +10,7 @@ public class EnemyActions
 
     private float originOffset = 0.5f;
     public float cooldown = 2f;
+    public int raycastDistance = 10;
 
 
     public EnemyActions(GameObject player)
@@ -28,7 +29,7 @@ public class EnemyActions
     public Vector2 DetectAndChase(Vector2 position, Vector2 playerPosition)
     {
         Vector2 direction = playerPosition - position;
-        RaycastHit2D raycastHit = Physics2D.Raycast(position, direction, 5);
+        RaycastHit2D raycastHit = Physics2D.Raycast(position, direction, raycastDistance);
 
         if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance > 1)
         {

@@ -58,6 +58,11 @@ public partial class EnemyController : MonoBehaviour
         Move();
     }
 
+    protected virtual void Move()
+    {
+        GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position);
+    }
+
     public void TakeDamage(int initalDamage, WeaponController.energyTypes type)
     {
         if (weakness == type)
@@ -88,34 +93,6 @@ public partial class EnemyController : MonoBehaviour
         }
 
 
-    }
-
-    //public void inflictDamage()
-    //{
-    //    player.GetComponent<PlayerController>().takeDamage(damage);
-    //    if (player.GetComponent<PlayerController>().isDead())
-    //    {
-    //        Debug.Log("Player is Dead :(");
-    //    }
-        
-    //}
-
-    protected virtual void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject == player)
-        {
-
-            stopMovement = true;
-            stopPosition = transform.position;
-
-            InflictDamage();
-            Debug.Log(player.GetComponent<PlayerController>().health);
-        }
-    }
-
-    protected virtual void OnCollisionExit2D(Collision2D other)
-    {
-        stopMovement = false;
     }
 
     void Die()
