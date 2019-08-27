@@ -16,7 +16,7 @@ public class EnemyActions
     {
         this.player = player;
         attackTimer = 0;
-
+        firstAttack = true;
     }
 
     public Vector2 Follow(Vector2 position, int speed)
@@ -37,16 +37,25 @@ public class EnemyActions
         return position;
     }
 
-    //public void MeleeAttack()
-    //{
-    //    attackTimer += Time.deltaTime;
-    //    if (attackTimer >= cooldown || firstAttack)
-    //    {
-    //        inflictDamage();
-    //        Debug.Log(player.GetComponent<PlayerController>().health);
-    //        attackTimer = 0f;
-    //        firstAttack = false;
-    //    }
-    //}
+    public void MeleeAttack(int damage)
+    {
+        attackTimer += Time.deltaTime;
+        if (attackTimer >= cooldown || firstAttack)
+        {
+            inflictDamage(damage);
+            Debug.Log(player.GetComponent<PlayerController>().health);
+            attackTimer = 0f;
+            firstAttack = false;
+        }
+    }
+
+    private void inflictDamage(int damage)
+    {
+        player.GetComponent<PlayerController>().takeDamage(damage);
+        if (player.GetComponent<PlayerController>().isDead())
+        {
+            Debug.Log("Player is Dead :(");
+        }
+    }
 
 }

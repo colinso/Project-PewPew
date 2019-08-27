@@ -51,15 +51,15 @@ public partial class EnemyController : MonoBehaviour
         }
     }
 
-    public void inflictDamage()
-    {
-        player.GetComponent<PlayerController>().takeDamage(damage);
-        if (player.GetComponent<PlayerController>().isDead())
-        {
-            Debug.Log("Player is Dead :(");
-        }
+    //public void inflictDamage()
+    //{
+    //    player.GetComponent<PlayerController>().takeDamage(damage);
+    //    if (player.GetComponent<PlayerController>().isDead())
+    //    {
+    //        Debug.Log("Player is Dead :(");
+    //    }
         
-    }
+    //}
 
     protected virtual void Move()
     {
