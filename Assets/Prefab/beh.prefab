@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 3485391322399956604}
   - component: {fileID: 3485391322399956603}
   - component: {fileID: 3485391322399956602}
-  - component: {fileID: 3485391322399956601}
   - component: {fileID: 3485391322399956606}
+  - component: {fileID: 1198053078}
   m_Layer: 0
   m_Name: beh
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad705bba33f3642f4bc26cd844e12c6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 3
   angularSpeed: 120
   acceleration: 8
   stoppingDistance: 0
@@ -131,33 +131,6 @@ MonoBehaviour:
   quality: 4
   priority: 50
   autoRepath: 1
---- !u!114 &3485391322399956601
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3485391322399956600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90ec96d4538f14bd28977f763a5990dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 150
-  ammoDrop: {fileID: 0}
-  experienceDrop: 0
-  damage: 0
-  speed: 0
-  weakness: 0
-  weaknessMultiplier: 1
-  distanceFromPlayer: 0
-  rb: {fileID: 3485391322399956606}
-  player: {fileID: 0}
-  stopMovement: 0
-  type: 0
-  state: 0
-  debuffTime: 0
-  navi: {fileID: 0}
 --- !u!50 &3485391322399956606
 Rigidbody2D:
   serializedVersion: 4
@@ -179,3 +152,30 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &1198053078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485391322399956600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaae7a2fb4ba2491ea4230e9f90c1c84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 50
+  ammoDrop: {fileID: 0}
+  experienceDrop: 0
+  damage: 0
+  weakness: 0
+  weaknessMultiplier: 0
+  distanceFromPlayer: 0
+  rb: {fileID: 3485391322399956606}
+  player: {fileID: 0}
+  stopMovement: 0
+  type: 0
+  state: 0
+  debuffTime: 5
+  navi: {fileID: 0}
+  cooldown: 2
