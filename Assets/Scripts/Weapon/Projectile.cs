@@ -6,9 +6,9 @@ public class Projectile : MonoBehaviour
 {
     Vector3 moveDirection;
     public Rigidbody2D rb;
-    public int damange = 25;
+    public int damange = 20;
     public float speed = 20f;
-    public enum type { Electric, Fire, Freeze, Kinetic};
+    public WeaponController.energyTypes energyType;
 
     // Start is called before the first frame update
     void Start()
@@ -17,8 +17,6 @@ public class Projectile : MonoBehaviour
         mousePos.z = 10;
         moveDirection = (Camera.main.ScreenToWorldPoint(mousePos) - transform.position);
         moveDirection.z = 0;
-        moveDirection.Normalize();
-        //rb.velocity = transform.right * speed;
     }
 
     private void Update()
@@ -30,10 +28,14 @@ public class Projectile : MonoBehaviour
     {
         EnemyController enemy = collision.GetComponent<EnemyController>();
 
-        if(enemy != null)
+        if (enemy != null)
         {
-            enemy.takeDamage(damange);
+            enemy.TakeDamage(damange, energyType);
             Destroy(gameObject);
         }
+    }
+
+    public void changeType(WeaponController.energyTypes newType) {
+        energyType = newType;
     }
 }
