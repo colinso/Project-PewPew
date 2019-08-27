@@ -20,9 +20,11 @@ public partial class EnemyController : MonoBehaviour
     public EnemyState state;
     protected Vector2 stopPosition;
     private EnemyActions actions;
+    public NavMeshAgent2D navi;
 
     protected virtual void Awake()
     {
+        navi = GetComponent<NavMeshAgent2D>();
         player = GameObject.FindGameObjectWithTag("Player");
         stopMovement = false;
         actions = new EnemyActions(player);
@@ -36,7 +38,7 @@ public partial class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        GetComponent<NavMeshAgent2D>().destination = player.transform.position;
     }
 
     public void takeDamage(int damageTaken)

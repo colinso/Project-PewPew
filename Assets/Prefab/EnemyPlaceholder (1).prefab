@@ -109,6 +109,8 @@ MonoBehaviour:
   player: {fileID: 0}
   stopMovement: 0
   type: 0
+  state: 0
+  navi: {fileID: 0}
 --- !u!50 &471486950131650298
 Rigidbody2D:
   serializedVersion: 4
@@ -180,6 +182,9 @@ MonoBehaviour:
   player: {fileID: 0}
   stopMovement: 0
   type: 0
+  state: 0
+  navi: {fileID: 0}
+  cooldown: 2
 --- !u!60 &471486950131650303
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -187,7 +192,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 471486950131650302}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
