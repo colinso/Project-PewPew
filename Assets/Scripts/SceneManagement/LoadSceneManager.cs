@@ -44,7 +44,6 @@ public class LoadSceneManager : MonoBehaviour
     public void Load(string sceneName)
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        player.GetComponent<PlayerMovement>().enabled = true;
         Debug.Log("Loading scene: " + sceneName);
         StartCoroutine(FadeInAndLoad(sceneName));
     }
@@ -52,7 +51,6 @@ public class LoadSceneManager : MonoBehaviour
     public void Unload(string sceneName)
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        player.GetComponent<PlayerMovement>().enabled = false;
         Debug.Log("Unloading scene: " + sceneName);
         StartCoroutine(FadeOutAndUnload(sceneName));
     }
@@ -67,9 +65,13 @@ public class LoadSceneManager : MonoBehaviour
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
         yield return new WaitUntil(() => !SceneManager.GetSceneByName(oldScene).isLoaded && SceneManager.GetSceneByName(sceneName).isLoaded);
         blackScreenAnimator.SetTrigger("FadeIn");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.GetComponent<PlayerMovement>().enabled = true;
     }
     IEnumerator FadeOutAndUnload(string sceneName)
     {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.GetComponent<PlayerMovement>().enabled = false;
         blackScreenAnimator.SetTrigger("FadeOut");
         yield return new WaitUntil(() => blackScreenImage.color.a == 1);
         SceneManager.UnloadScene(sceneName);

@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     private Vector2 stopPosition;
     public bool stopMovement;
+    public Animator animator;
+    private Vector2 lastMove;
 
     private Vector2 movement;
     // Start is called before the first frame update
@@ -22,6 +24,22 @@ public class PlayerMovement : MonoBehaviour
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
+
+        animator.SetFloat("Horizontal", movement.x);
+        animator.SetFloat("Vertical", movement.y);
+        animator.SetFloat("Speed", movement.sqrMagnitude);
+
+        if (Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < -0.5f)
+        {
+            lastMove = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
+        }
+        if (Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < -0.5f)
+        {
+            lastMove = new Vector2(0f, Input.GetAxisRaw("Vertical"));
+        }
+
+        animator.SetFloat("LastMoveHorizontal", lastMove.x);
+        animator.SetFloat("LastMoveVertical", lastMove.y);
     }
 
     private void FixedUpdate()
