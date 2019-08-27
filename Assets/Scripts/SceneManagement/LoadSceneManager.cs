@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LoadSceneManager : MonoBehaviour
 {
@@ -10,7 +11,9 @@ public class LoadSceneManager : MonoBehaviour
     public string firstScene;
     [HideInInspector]
     public string currentScene;
-    string QueuedScene;
+    public Animator blackScreenAnimator;
+    public Image blackScreenImage;
+
 
     private void Awake()
     {
@@ -18,9 +21,7 @@ public class LoadSceneManager : MonoBehaviour
     }
     void Start()
     {
-        Debug.Log("Hi");
-        LoadScene("PlayerScene");
-        LoadScene(firstScene);
+        StartCoroutine(LoadFirstScene());
     }
 
     // Update is called once per frame
@@ -29,28 +30,48 @@ public class LoadSceneManager : MonoBehaviour
         
     }
 
-    public void LoadScene(string sceneName)
+    IEnumerator LoadFirstScene()
     {
+        yield return new WaitUntil(() => blackScreenImage.color.a == 1);
+        SceneManager.LoadScene("PlayerScene", LoadSceneMode.Additive);
+        yield return new WaitUntil(() => SceneManager.GetSceneByName("PlayerScene").isLoaded);
+        CameraMovement.Instance.player = GameObject.FindGameObjectWithTag("Player");
+        SceneManager.LoadScene(firstScene, LoadSceneMode.Additive);
+        currentScene = firstScene;
+        yield return new WaitUntil(() => SceneManager.GetSceneByName(firstScene).isLoaded);
+        blackScreenAnimator.SetTrigger("FadeIn");
+    }
+    public void Load(string sceneName)
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.GetComponent<PlayerMovement>().enabled = true;
         Debug.Log("Loading scene: " + sceneName);
         StartCoroutine(FadeInAndLoad(sceneName));
     }
 
-    public void UnloadScene(string sceneName)
+    public void Unload(string sceneName)
     {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.GetComponent<PlayerMovement>().enabled = false;
         Debug.Log("Unloading scene: " + sceneName);
-        SceneManager.UnloadSceneAsync(sceneName);
+        StartCoroutine(FadeOutAndUnload(sceneName));
     }
     IEnumerator FadeInAndLoad(string sceneName)
     {
-        SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        string oldScene = currentScene;
+        yield return new WaitUntil(() => blackScreenImage.color.a == 1);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
         yield return new WaitUntil(() => SceneManager.GetSceneByName(sceneName).isLoaded);
         currentScene = sceneName;
 
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
-        if (sceneName == "PlayerScene")
-        {
-            CameraMovement.Instance.player = GameObject.FindGameObjectWithTag("Player");
-            Debug.Log(CameraMovement.Instance.player);
-        }
+        yield return new WaitUntil(() => !SceneManager.GetSceneByName(oldScene).isLoaded && SceneManager.GetSceneByName(sceneName).isLoaded);
+        blackScreenAnimator.SetTrigger("FadeIn");
+    }
+    IEnumerator FadeOutAndUnload(string sceneName)
+    {
+        blackScreenAnimator.SetTrigger("FadeOut");
+        yield return new WaitUntil(() => blackScreenImage.color.a == 1);
+        SceneManager.UnloadScene(sceneName);
     }
 }

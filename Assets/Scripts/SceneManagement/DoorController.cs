@@ -20,7 +20,7 @@ public class DoorController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        LoadSceneManager.Instance.UnloadScene(LoadSceneManager.Instance.currentScene);
-        LoadSceneManager.Instance.LoadScene(NextSceneName);
+        LoadSceneManager.Instance.Unload(LoadSceneManager.Instance.currentScene);
+        LoadSceneManager.Instance.Load(NextSceneName);
     }
 }
