@@ -17,11 +17,15 @@ public partial class EnemyController : MonoBehaviour
     public GameObject player;
     public bool stopMovement;
     public EnemyTypes type;
+    public EnemyState state;
     protected Vector2 stopPosition;
+    private EnemyActions actions;
 
     protected virtual void Awake()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         stopMovement = false;
+        actions = new EnemyActions(player);
     }
 
     // Update is called once per frame
@@ -63,10 +67,9 @@ public partial class EnemyController : MonoBehaviour
         }
         else
         {
-            Vector2 playerPosition = player.transform.position;
-            transform.position = Vector2.MoveTowards(transform.position, playerPosition, speed * Time.deltaTime);
+            transform.position = actions.Follow(transform.position, speed);
         }
-    }
+    } 
 
     protected virtual void OnCollisionEnter2D(Collision2D other)
     {
@@ -74,8 +77,6 @@ public partial class EnemyController : MonoBehaviour
         {
             stopMovement = true;
             stopPosition = transform.position;
-            inflictDamage();
-            Debug.Log(player.GetComponent<PlayerController>().health);
         }
     }
 
