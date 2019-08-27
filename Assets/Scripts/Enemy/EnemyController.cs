@@ -12,7 +12,7 @@ public partial class EnemyController : MonoBehaviour
     public int speed;
     public string weakness;
     public int weaknessMultiplier;
-    public int distanceFromPlayer;
+    public float distanceFromPlayer;
     public Rigidbody2D rb;
     public GameObject player;
     public bool stopMovement;
@@ -21,6 +21,8 @@ public partial class EnemyController : MonoBehaviour
     protected Vector2 stopPosition;
     private EnemyActions actions;
     public NavMeshAgent2D navi;
+
+    private float originOffset = 0.5f;
 
     protected virtual void Awake()
     {
@@ -38,7 +40,13 @@ public partial class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        GetComponent<NavMeshAgent2D>().destination = player.transform.position;
+        Vector2 direction = player.transform.position - transform.position;
+        RaycastHit2D raycastHit = Physics2D.Raycast(transform.position, direction, 5);
+
+        if (raycastHit.collider != null && raycastHit.collider.tag == "Player")
+        {
+            GetComponent<NavMeshAgent2D>().destination = player.transform.position;
+        }
     }
 
     public void takeDamage(int damageTaken)
@@ -52,7 +60,7 @@ public partial class EnemyController : MonoBehaviour
     }
 
     public void inflictDamage()
-    {   
+    {
         player.GetComponent<PlayerController>().takeDamage(damage);
         if (player.GetComponent<PlayerController>().isDead())
         {
@@ -69,7 +77,7 @@ public partial class EnemyController : MonoBehaviour
         }
         else
         {
-            transform.position = actions.Follow(transform.position, speed);
+            //GetComponent<NavMeshAgent2D>().destination = player.transform.position;
         }
     } 
 

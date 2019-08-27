@@ -6,8 +6,11 @@ public class EnemyActions
 {
     GameObject player;
     private float attackTimer;
-    public float cooldown = 2f;
     private bool firstAttack;
+
+    private float originOffset = 0.5f;
+    public float cooldown = 2f;
+
 
     public EnemyActions(GameObject player)
     {
@@ -22,6 +25,18 @@ public class EnemyActions
         return Vector2.MoveTowards(position, playerPosition, speed * Time.deltaTime);
     }
 
+    public Vector2 DetectAndChase(Vector2 position, Vector2 playerPosition)
+    {
+        Vector2 direction = playerPosition - position;
+        RaycastHit2D raycastHit = Physics2D.Raycast(position, direction, 5);
+
+        if (raycastHit.collider != null && raycastHit.collider.tag == "Player")
+        {
+            return player.transform.position;
+        }
+        return position;
+    }
+
     //public void MeleeAttack()
     //{
     //    attackTimer += Time.deltaTime;
@@ -33,4 +48,5 @@ public class EnemyActions
     //        firstAttack = false;
     //    }
     //}
+
 }
