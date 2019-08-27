@@ -11,6 +11,7 @@ public class CameraMovement : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
     void Update()
     {
