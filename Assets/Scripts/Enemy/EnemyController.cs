@@ -5,12 +5,11 @@ using UnityEngine;
 
 public partial class EnemyController : MonoBehaviour
 {
-    public int health;
+    public int health = 100;
     public GameObject ammoDrop;
     public int experienceDrop;
     public int damage;
-    public int speed;
-    public string weakness;
+    public WeaponController.energyTypes weakness;
     public int weaknessMultiplier;
     public float distanceFromPlayer;
     public Rigidbody2D rb;
@@ -18,7 +17,15 @@ public partial class EnemyController : MonoBehaviour
     public bool stopMovement;
     public EnemyTypes type;
     public EnemyState state;
+    public float debuffTime = 5;
+
     protected Vector2 stopPosition;
+    protected float freezeMultiplier = 0.75f;
+    protected float fireMultiplier = 0.1f;
+    protected int firePerTick;
+    protected float kineticMultiplier = 1.5f;
+    protected float baseSpeed;
+
     private EnemyActions actions;
     public NavMeshAgent2D navi;
 
@@ -27,13 +34,23 @@ public partial class EnemyController : MonoBehaviour
         navi = GetComponent<NavMeshAgent2D>();
         player = GameObject.FindGameObjectWithTag("Player");
         stopMovement = false;
+
         actions = new EnemyActions(player);
+
+        baseSpeed = GetComponent<NavMeshAgent2D>().speed;
+        weaknessMultiplier = 2;
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (health <= 0)
+        {
+            Die();
+        }
+
     }
 
     private void FixedUpdate()
@@ -41,14 +58,36 @@ public partial class EnemyController : MonoBehaviour
         Move();
     }
 
-    public void takeDamage(int damageTaken)
+    public void TakeDamage(int initalDamage, WeaponController.energyTypes type)
     {
-        health -= damageTaken;
-
-        if (health <= 0)
+        if (weakness == type)
         {
-            die();
+            health -= initalDamage * weaknessMultiplier;
         }
+        else
+        {
+            health -= initalDamage;
+        }
+
+        switch (type)
+        {
+            case WeaponController.energyTypes.Electric:
+                DamangeElectric();
+                break;
+            case WeaponController.energyTypes.Fire:
+                firePerTick = (int)(initalDamage * fireMultiplier);
+                InvokeRepeating("FireTick", 1f, 1f);
+                StartCoroutine(DamangeFire());
+                break;
+            case WeaponController.energyTypes.Freeze:
+                StartCoroutine(DamangeFreeze());
+                break;
+            case WeaponController.energyTypes.Kinetic:
+                DamangeKinetic(initalDamage);
+                break;
+        }
+
+
     }
 
     //public void inflictDamage()
@@ -61,13 +100,58 @@ public partial class EnemyController : MonoBehaviour
         
     //}
 
-    protected virtual void Move()
+    protected virtual void OnCollisionEnter2D(Collision2D other)
     {
-        GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position);
-    } 
+        if (other.gameObject == player)
+        {
 
-    void die()
+            stopMovement = true;
+            stopPosition = transform.position;
+
+            InflictDamage();
+            Debug.Log(player.GetComponent<PlayerController>().health);
+        }
+    }
+
+    protected virtual void OnCollisionExit2D(Collision2D other)
+    {
+        stopMovement = false;
+    }
+
+    void Die()
     {
         Destroy(gameObject);
     }
+
+    private void DamangeElectric()
+    {
+        // Add electic damage filter
+    }
+
+    private void FireTick()
+    {
+        health -= firePerTick;
+    }
+
+    private void DamangeKinetic(int initalDamage)
+    {
+        health -= (int)(initalDamage * kineticMultiplier - initalDamage);
+    }
+
+    IEnumerator DamangeFreeze()
+    {
+        if (GetComponent<NavMeshAgent2D>().speed == baseSpeed)
+        {
+            GetComponent<NavMeshAgent2D>().speed = (int)(GetComponent<NavMeshAgent2D>().speed * freezeMultiplier);
+        }
+        yield return new WaitForSeconds(debuffTime);
+        GetComponent<NavMeshAgent2D>().speed = baseSpeed;
+    }
+    IEnumerator DamangeFire()
+    {
+        yield return new WaitForSeconds(debuffTime);
+        CancelInvoke("FireTick");
+    }
+
+
 }
