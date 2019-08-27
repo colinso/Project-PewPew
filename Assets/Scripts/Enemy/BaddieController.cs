@@ -34,7 +34,7 @@ public class BaddieController: EnemyController
         attackTimer += Time.deltaTime;
         if(attackTimer >= cooldown || firstAttack)
         {
-            inflictDamage();
+            InflictDamage();
             Debug.Log(player.GetComponent<PlayerController>().health);
             attackTimer = 0f;
             firstAttack = false;

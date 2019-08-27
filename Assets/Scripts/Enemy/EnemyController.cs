@@ -5,11 +5,10 @@ using UnityEngine;
 
 public partial class EnemyController : MonoBehaviour
 {
-    public int health;
+    public int health = 100;
     public GameObject ammoDrop;
     public int experienceDrop;
     public int damage;
-    public int speed;
     public WeaponController.energyTypes weakness;
     public int weaknessMultiplier;
     public float distanceFromPlayer;
@@ -18,15 +17,14 @@ public partial class EnemyController : MonoBehaviour
     public bool stopMovement;
     public EnemyTypes type;
     public EnemyState state;
-    public float debuffTime;
+    public float debuffTime = 5;
 
     protected Vector2 stopPosition;
     protected float freezeMultiplier = 0.75f;
     protected float fireMultiplier = 0.1f;
     protected int firePerTick;
     protected float kineticMultiplier = 1.5f;
-    protected int baseSpeed;
-    protected CircleCollider2D circleCollider;
+    protected float baseSpeed;
 
     private EnemyActions actions;
     public NavMeshAgent2D navi;
@@ -39,12 +37,10 @@ public partial class EnemyController : MonoBehaviour
 
         actions = new EnemyActions(player);
 
-        baseSpeed = speed;
+        baseSpeed = GetComponent<NavMeshAgent2D>().speed;
         weaknessMultiplier = 2;
 
-        circleCollider = gameObject.AddComponent<CircleCollider2D>() as CircleCollider2D;
-        circleCollider.radius = 1.5f;
-        circleCollider.isTrigger = true;
+
     }
 
     // Update is called once per frame
@@ -104,11 +100,6 @@ public partial class EnemyController : MonoBehaviour
 
     }
 
-    protected virtual void Move()
-    {
-        GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position);
-    }
-
     protected virtual void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject == player)
@@ -134,12 +125,7 @@ public partial class EnemyController : MonoBehaviour
 
     private void DamangeElectric()
     {
-        int numColliders = 5;
-        Collider2D[] colliders = new Collider2D[numColliders];
-        ContactFilter2D contactFilter = new ContactFilter2D();
-
-        Debug.Log(circleCollider.OverlapCollider(contactFilter, colliders));
-        //OverlapCollider
+        // Add electic damage filter
     }
 
     private void FireTick()
@@ -154,12 +140,12 @@ public partial class EnemyController : MonoBehaviour
 
     IEnumerator DamangeFreeze()
     {
-        if (speed == baseSpeed)
+        if (GetComponent<NavMeshAgent2D>().speed == baseSpeed)
         {
-            speed = (int)(speed * freezeMultiplier);
+            GetComponent<NavMeshAgent2D>().speed = (int)(GetComponent<NavMeshAgent2D>().speed * freezeMultiplier);
         }
         yield return new WaitForSeconds(debuffTime);
-        speed = baseSpeed;
+        GetComponent<NavMeshAgent2D>().speed = baseSpeed;
     }
     IEnumerator DamangeFire()
     {

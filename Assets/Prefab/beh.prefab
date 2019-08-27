@@ -143,19 +143,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ec96d4538f14bd28977f763a5990dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  health: 150
   ammoDrop: {fileID: 0}
   experienceDrop: 0
   damage: 0
   speed: 0
-  weakness: 
-  weaknessMultiplier: 0
+  weakness: 0
+  weaknessMultiplier: 1
   distanceFromPlayer: 0
   rb: {fileID: 3485391322399956606}
   player: {fileID: 0}
   stopMovement: 0
   type: 0
   state: 0
+  debuffTime: 0
   navi: {fileID: 0}
 --- !u!50 &3485391322399956606
 Rigidbody2D:
