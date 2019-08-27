@@ -22,8 +22,6 @@ public partial class EnemyController : MonoBehaviour
     private EnemyActions actions;
     public NavMeshAgent2D navi;
 
-    private float originOffset = 0.5f;
-
     protected virtual void Awake()
     {
         navi = GetComponent<NavMeshAgent2D>();
@@ -40,13 +38,7 @@ public partial class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 direction = player.transform.position - transform.position;
-        RaycastHit2D raycastHit = Physics2D.Raycast(transform.position, direction, 5);
-
-        if (raycastHit.collider != null && raycastHit.collider.tag == "Player")
-        {
-            GetComponent<NavMeshAgent2D>().destination = player.transform.position;
-        }
+        Move();
     }
 
     public void takeDamage(int damageTaken)
@@ -71,29 +63,8 @@ public partial class EnemyController : MonoBehaviour
 
     protected virtual void Move()
     {
-        if (stopMovement == true)
-        {
-            transform.position = stopPosition;
-        }
-        else
-        {
-            //GetComponent<NavMeshAgent2D>().destination = player.transform.position;
-        }
+        GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position);
     } 
-
-    protected virtual void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject == player)
-        {
-            stopMovement = true;
-            stopPosition = transform.position;
-        }
-    }
-
-    protected virtual void OnCollisionExit2D(Collision2D other)
-    {
-        stopMovement = false;
-    }
 
     void die()
     {

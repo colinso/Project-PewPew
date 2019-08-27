@@ -30,7 +30,7 @@ public class EnemyActions
         Vector2 direction = playerPosition - position;
         RaycastHit2D raycastHit = Physics2D.Raycast(position, direction, 5);
 
-        if (raycastHit.collider != null && raycastHit.collider.tag == "Player")
+        if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance > 1)
         {
             return player.transform.position;
         }
