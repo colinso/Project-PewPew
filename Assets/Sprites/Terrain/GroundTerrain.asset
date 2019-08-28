@@ -12,17 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: GroundTerrain
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: -2860982009417361707, guid: b314c8158e62a4a41abf406c4289c2a1,
+  m_DefaultSprite: {fileID: -2860982009417361707, guid: 9ed9158e24e154ff9a004cbaa6984b29,
     type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
   - m_Neighbors: 0000000000000000000000000000000000000000000000000000000000000000
     m_Sprites:
-    - {fileID: -2860982009417361707, guid: b314c8158e62a4a41abf406c4289c2a1, type: 3}
-    - {fileID: 833101472512629755, guid: b314c8158e62a4a41abf406c4289c2a1, type: 3}
-    - {fileID: -4458388979400810444, guid: b314c8158e62a4a41abf406c4289c2a1, type: 3}
-    - {fileID: -1733739152878373738, guid: b314c8158e62a4a41abf406c4289c2a1, type: 3}
+    - {fileID: -2860982009417361707, guid: 9ed9158e24e154ff9a004cbaa6984b29, type: 3}
+    - {fileID: 833101472512629755, guid: 9ed9158e24e154ff9a004cbaa6984b29, type: 3}
+    - {fileID: -4458388979400810444, guid: 9ed9158e24e154ff9a004cbaa6984b29, type: 3}
+    - {fileID: -1733739152878373738, guid: 9ed9158e24e154ff9a004cbaa6984b29, type: 3}
+    - {fileID: -2860982009417361707, guid: 9ed9158e24e154ff9a004cbaa6984b29, type: 3}
+    - {fileID: -2860982009417361707, guid: 9ed9158e24e154ff9a004cbaa6984b29, type: 3}
+    - {fileID: -1733739152878373738, guid: 9ed9158e24e154ff9a004cbaa6984b29, type: 3}
     m_GameObject: {fileID: 0}
     m_AnimationSpeed: 1
     m_PerlinScale: 0.5

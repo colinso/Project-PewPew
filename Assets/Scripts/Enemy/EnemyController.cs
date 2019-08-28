@@ -5,6 +5,7 @@ using UnityEngine;
 
 public partial class EnemyController : MonoBehaviour
 {
+    public int maxHealth = 100;
     public int health = 100;
     public GameObject ammoDrop;
     public int experienceDrop;
@@ -100,6 +101,9 @@ public partial class EnemyController : MonoBehaviour
                 break;
             case WeaponController.energyTypes.Kinetic:
                 DamangeKinetic(initalDamage);
+                break;
+            case WeaponController.energyTypes.Explosion:
+                // Explosion effect?
                 break;
         }
 

@@ -48,6 +48,7 @@ MonoBehaviour:
   player: {fileID: 0}
   projectilePrefab: {fileID: 8970546750298804746, guid: 4216e95bdc1844493a19110d02e47c25,
     type: 3}
+  selectedType: 0
 --- !u!1 &1545490713
 GameObject:
   m_ObjectHideFlags: 0
