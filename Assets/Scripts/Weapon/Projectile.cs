@@ -4,27 +4,29 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public Vector3 moveDirection;
+    protected Vector3 moveDirection;
     public Rigidbody2D rb;
-    public int damage = 20;
-    public float speed = 20f;
     public bool isPlayer;
-    public WeaponController.EnergyTypes energyType;
+    protected WeaponController.EnergyTypes energyType;
+    protected WeaponController.WeaponTypes weaponType;
+    protected int damage = 20;
+    protected float speed = 5f;
     protected CircleCollider2D circleCollider;
     private bool hit;
     private HashSet<EnemyController> hitList;
-    private float killDelay = 0.05f;
+    private float killDelay = 0f;
 
     // Start is called before the first frame update
     public virtual void Start()
     {
         var mousePos = Input.mousePosition;
         mousePos.z = 10;
+
         moveDirection = (Camera.main.ScreenToWorldPoint(mousePos) - transform.position);
         moveDirection.z = 0;
 
         circleCollider = gameObject.AddComponent<CircleCollider2D>() as CircleCollider2D;
-        circleCollider.radius = 5f;
+        circleCollider.radius = 1.5f;
         circleCollider.isTrigger = true;
         circleCollider.enabled = false;
         isPlayer = true;
@@ -41,17 +43,17 @@ public class Projectile : MonoBehaviour
         }
         else if (!hit || !isPlayer)
         {
-            transform.position = transform.position + moveDirection * speed * Time.deltaTime;
-        } else if( hit && isPlayer)
+            transform.position = transform.position + moveDirection.normalized * speed * Time.deltaTime;
+        } else
         {
             killDelay -= Time.deltaTime;
             if (killDelay <= 0)
             {
-                
+
                 foreach (var item in hitList)
                 {
-                    print(item);
-                    item.TakeDamage(damange, energyType);
+                    Debug.Log(item);
+                    item.TakeDamage(damage, energyType);
                 }
 
                 Destroy(gameObject);
@@ -59,26 +61,33 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collision2D collision)
     {
+        EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
+        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+
         if (isPlayer)
         {
-            EnemyController enemy = collision.GetComponent<EnemyController>();
 
-            if (enemy != null)
+            if (enemy != null && energyType == WeaponController.EnergyTypes.Electric)
             {
                 hitList.Add(enemy);
                 circleCollider.enabled = true;
                 hit = true;
                 transform.position = enemy.transform.position;
+            } else if (!player && !enemy && !hit && !projectile)
+            {
+                Destroy(gameObject);
             }
         }
         else
         {
             PlayerController player = collision.GetComponent<PlayerController>();
 
-            if(player != null && energyType == WeaponController.EnergyTypes.Electric)
+            if(player != null)
             {
+
                 circleCollider.enabled = true;
                 hit = true;
                 transform.position = player.transform.position;
@@ -86,7 +95,7 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void changeType(WeaponController.EnergyTypes newType) {
-        energyType = newType;
+    public void changeType(WeaponController.EnergyTypes newEng) {
+        energyType = newEng;
     }
 }

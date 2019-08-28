@@ -138,6 +138,7 @@ public partial class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(debuffTime);
         GetComponent<NavMeshAgent2D>().speed = baseSpeed;
     }
+
     IEnumerator DamangeFire()
     {
         yield return new WaitForSeconds(debuffTime);
