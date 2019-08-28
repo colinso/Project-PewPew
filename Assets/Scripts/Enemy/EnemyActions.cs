@@ -9,19 +9,22 @@ public class EnemyActions
     private float attackTimer;
     private float detectionTimer;
     private bool firstAttack;
+    private bool toPatrolPosition;
 
     private float originOffset = 0.5f;
     public float cooldown = 0.5f;
     public float detectionMax = 1.5f;
-    public int raycastDistance = 10;
+    public int raycastDistance = 5;
 
 
-    public EnemyActions(GameObject player)
+    public EnemyActions(GameObject player, GameObject enemy)
     {
         this.player = player;
+        this.enemy = enemy;
         attackTimer = 0;
         detectionTimer = 0;
         firstAttack = true;
+        toPatrolPosition = true;
     }
 
     public Vector2 Follow(Vector2 position, int speed)
@@ -32,6 +35,7 @@ public class EnemyActions
 
     public Vector2 DetectAndChase(Vector2 position, Vector2 playerPosition)
     {
+        enemy.GetComponent<NavMeshAgent2D>().speed = getEnemy().getBaseSpeed();
         Vector2 direction = playerPosition - position;
         RaycastHit2D raycastHit = Physics2D.Raycast(position, direction, raycastDistance);
         
@@ -47,7 +51,8 @@ public class EnemyActions
         }
         else if ( (raycastHit.collider == null || raycastHit.collider.tag != "Player") && detectionTimer >= detectionMax) // Player is not detected and timer is run out
         {
-            return position; // Stay put
+            enemy.GetComponent<NavMeshAgent2D>().speed = getEnemy().getPatrolSpeed();
+            return Patrol(); // Go back to original position
         }
         else
         {
@@ -71,6 +76,28 @@ public class EnemyActions
         return position;
     }
 
+    public Vector2 Patrol()
+    {
+        enemy.GetComponent<NavMeshAgent2D>().speed = getEnemy().getPatrolSpeed();
+        if (toPatrolPosition && (Vector2) getEnemy().transform.position != getEnemy().patrolPosition)
+        {
+            return getEnemy().patrolPosition;
+        }
+        else if (toPatrolPosition && (Vector2) getEnemy().transform.position == getEnemy().patrolPosition)
+        {
+
+            return getEnemy().startPosition;
+        }
+        else if (!toPatrolPosition && (Vector2)getEnemy().transform.position != getEnemy().startPosition)
+        {
+            return getEnemy().startPosition;
+        }
+        else
+        {
+            return getEnemy().patrolPosition;
+        }
+    }
+
     public void MeleeAttack(int damage)
     {
         attackTimer += Time.deltaTime;
@@ -85,8 +112,8 @@ public class EnemyActions
 
     private void inflictDamage(int damage)
     {
-        player.GetComponent<PlayerController>().takeDamage(damage);
-        if (player.GetComponent<PlayerController>().isDead())
+        getPlayer().takeDamage(damage);
+        if (getPlayer().isDead())
         {
             Debug.Log("Player is Dead :(");
         }
@@ -99,5 +126,15 @@ public class EnemyActions
         Debug.Log("x " + x);
         Debug.Log("y " + y);
         return new Vector2(x, y);
+    }
+
+    private PlayerController getPlayer()
+    {
+        return player.GetComponent<PlayerController>();
+    }
+
+    private EnemyController getEnemy()
+    {
+        return enemy.GetComponent<EnemyController>();
     }
 }

@@ -14,7 +14,7 @@ public class BaddieController: EnemyController
         damage = 20;
         health = 40;
 
-        actions = new EnemyActions(player);
+        actions = new EnemyActions(player, gameObject);
 
         CircleCollider2D circleCollider = gameObject.AddComponent<CircleCollider2D>() as CircleCollider2D;
         circleCollider.radius = 2f;
