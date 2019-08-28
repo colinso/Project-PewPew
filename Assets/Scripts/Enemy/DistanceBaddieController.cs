@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaddieController: EnemyController
+public class DistanceBaddieController: EnemyController
 {
     public float cooldown = 2f;
+
     private EnemyActions actions;
 
     protected override void Awake()
     {
         base.Awake();
-        baddieType = EnemyConstants.EnemyTypes.Baddie;
-        damage = 20;
-        health = 40;
+        baddieType = EnemyConstants.EnemyTypes.DistanceBaddie;
+        damage = 10;
+        health = 80;
 
         actions = new EnemyActions(player);
 
@@ -23,9 +24,9 @@ public class BaddieController: EnemyController
 
     protected virtual void OnTriggerStay2D(Collider2D col)
     {
-        if(col.gameObject == player)
+        if (col.gameObject == player)
         {
-            actions.MeleeAttack(damage);
+            print("Within Range, captain");
         }
     }
 

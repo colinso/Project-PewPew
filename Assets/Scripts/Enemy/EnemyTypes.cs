@@ -1,4 +1,4 @@
 ﻿public partial class EnemyController
 {
-    public enum EnemyTypes { Baddie, BigBaddie }
+    public enum EnemyTypes { Baddie, DistanceBaddie }
 }

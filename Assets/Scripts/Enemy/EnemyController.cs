@@ -15,7 +15,7 @@ public partial class EnemyController : MonoBehaviour
     public Rigidbody2D rb;
     public GameObject player;
     public bool stopMovement;
-    public EnemyTypes type;
+    public EnemyConstants.EnemyTypes baddieType;
     public EnemyState state;
     public float debuffTime = 5;
 
@@ -60,7 +60,15 @@ public partial class EnemyController : MonoBehaviour
 
     protected virtual void Move()
     {
-        GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position);
+        Debug.Log(baddieType);
+        if (baddieType == EnemyConstants.EnemyTypes.Baddie)
+        {
+            GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position);
+        }
+        else if (baddieType == EnemyConstants.EnemyTypes.DistanceBaddie)
+        {
+            GetComponent<NavMeshAgent2D>().destination = actions.KeepDistance(transform.position, player.transform.position, Vector2.Distance(transform.position, player.transform.position));
+        }
     }
 
     public void TakeDamage(int initalDamage, WeaponController.energyTypes type)
