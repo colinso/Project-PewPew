@@ -68,15 +68,10 @@ public class EnemyActions
 
         if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance < 5)
         {
-            MeleeAttack(1);
             return getDistantLocation(raycastHit.distance, 5, position, playerPosition); 
         }
         else if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance > 5)
         {
-            if(raycastHit.distance < 6)
-            {
-                MeleeAttack(1);
-            }
             return getPlayer().transform.position;
         }
         return position;

@@ -6,31 +6,43 @@ public class WeaponController : MonoBehaviour
 {
 	public Transform firePoint;
 	public GameObject player;
+    public GameObject host;
 	public GameObject projectilePrefab;
 	public GameObject granadePrefab;
     public enum energyTypes { Electric, Fire, Freeze, Kinetic, Explosion };
 	public energyTypes selectedType;
+    public float timerMax = 0.1f;
+    public float timer;
 
 	// Start is called before the first frame update
 	void Start()
 	{
-
+        timer = 0;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+        timer += Time.deltaTime;
         // set position of the gun
-		transform.position = player.transform.position;
+		transform.position = host.transform.position;
 
-        // Change energy type
-        ChangeEnergyType();
+        if(host.tag == "Player")
+        {
+            // Change energy type
+            ChangeEnergyType();
+            
+            // Shoot
+            Shoot();
 
-        // Shoot
-        Shoot();
-
-        // Throw Nades 
-        Throw();
+            // Throw Nades 
+            Throw();
+        }
+        else if(timer >= timerMax)
+        {
+            timer = 0;
+            Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        }
     }
 
 	void Shoot()

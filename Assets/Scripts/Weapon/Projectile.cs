@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    Vector3 moveDirection;
+    public Vector3 moveDirection;
     public Rigidbody2D rb;
     public int damange = 20;
     public float speed = 20f;
     public WeaponController.energyTypes energyType;
+    public bool isPlayer;
     protected CircleCollider2D circleCollider;
     private bool hit;
     private HashSet<EnemyController> hitList;
     private float killDelay = 0.05f;
 
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
         var mousePos = Input.mousePosition;
         mousePos.z = 10;
@@ -26,16 +27,22 @@ public class Projectile : MonoBehaviour
         circleCollider.radius = 5f;
         circleCollider.isTrigger = true;
         circleCollider.enabled = false;
+        isPlayer = true;
 
         hitList = new HashSet<EnemyController>();
     }
 
     private void Update()
     {
-        if (!hit)
+        if (hit && !isPlayer)
+        {
+            Destroy(gameObject);
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().takeDamage(5);
+        }
+        else if (!hit || !isPlayer)
         {
             transform.position = transform.position + moveDirection * speed * Time.deltaTime;
-        } else
+        } else if( hit && isPlayer)
         {
             killDelay -= Time.deltaTime;
             if (killDelay <= 0)
@@ -44,6 +51,7 @@ public class Projectile : MonoBehaviour
                 {
                     item.TakeDamage(damange, energyType);
                 }
+
                 Destroy(gameObject);
             }
         }
@@ -51,14 +59,28 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        EnemyController enemy = collision.GetComponent<EnemyController>();
-
-        if (enemy != null)
+        if (isPlayer)
         {
-            hitList.Add(enemy);
-            circleCollider.enabled = true;
-            hit = true;
-            transform.position = enemy.transform.position;
+            EnemyController enemy = collision.GetComponent<EnemyController>();
+
+            if (enemy != null)
+            {
+                hitList.Add(enemy);
+                circleCollider.enabled = true;
+                hit = true;
+                transform.position = enemy.transform.position;
+            }
+        }
+        else
+        {
+            PlayerController player = collision.GetComponent<PlayerController>();
+
+            if(player != null)
+            {
+                circleCollider.enabled = true;
+                hit = true;
+                transform.position = player.transform.position;
+            }
         }
     }
 
