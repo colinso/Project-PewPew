@@ -46,9 +46,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoint: {fileID: 1545490714}
   player: {fileID: 0}
+  host: {fileID: 463040235142245741}
   projectilePrefab: {fileID: 8970546750298804746, guid: 4216e95bdc1844493a19110d02e47c25,
     type: 3}
+  granadePrefab: {fileID: 0}
   selectedType: 0
+  timerMax: 0.1
+  timer: 0
 --- !u!1 &1545490713
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2700824ae95645d3b3ecc419f99885f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
   health: 0
   stamina: 0
   experience: 0

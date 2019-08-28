@@ -58,14 +58,15 @@ public partial class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
+        MoveAndAttack();
     }
 
-    protected virtual void Move()
+    protected virtual void MoveAndAttack()
     {
         if (baddieType == EnemyConstants.EnemyTypes.Baddie)
         {
             GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position);
+            actions.MeleeAttack(damage);
         }
         else if (baddieType == EnemyConstants.EnemyTypes.DistanceBaddie)
         {

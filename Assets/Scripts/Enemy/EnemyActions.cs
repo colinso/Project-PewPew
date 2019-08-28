@@ -74,7 +74,7 @@ public class EnemyActions
         {
             return getPlayer().transform.position;
         }
-        return position;
+        return Patrol();
     }
 
     public Vector2 Patrol()
@@ -95,7 +95,7 @@ public class EnemyActions
     public void MeleeAttack(int damage)
     {
         attackTimer += Time.deltaTime;
-        if (attackTimer >= cooldown || firstAttack)
+        if (Vector2.Distance(getEnemy().transform.position, getPlayer().transform.position) <= 1.5 && (attackTimer >= cooldown || firstAttack))
         {
             inflictDamage(damage);
             Debug.Log(player.GetComponent<PlayerController>().health);

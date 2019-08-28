@@ -11,7 +11,7 @@ public class WeaponController : MonoBehaviour
 	public GameObject granadePrefab;
     public enum energyTypes { Electric, Fire, Freeze, Kinetic, Explosion };
 	public energyTypes selectedType;
-    public float timerMax = 0.1f;
+    public float timerMax = 0.5f;
     public float timer;
 
 	// Start is called before the first frame update
