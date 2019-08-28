@@ -9,7 +9,7 @@ public class EnemyActions
     private float attackTimer;
     private float detectionTimer;
     private bool firstAttack;
-    private bool toPatrolPosition;
+    private int patrolIndex;
 
     private float originOffset = 0.5f;
     public float cooldown = 0.5f;
@@ -24,7 +24,7 @@ public class EnemyActions
         attackTimer = 0;
         detectionTimer = 0;
         firstAttack = true;
-        toPatrolPosition = true;
+        patrolIndex = 0;
     }
 
     public Vector2 Follow(Vector2 position, int speed)
@@ -52,7 +52,7 @@ public class EnemyActions
         else if ( (raycastHit.collider == null || raycastHit.collider.tag != "Player") && detectionTimer >= detectionMax) // Player is not detected and timer is run out
         {
             enemy.GetComponent<NavMeshAgent2D>().speed = getEnemy().getPatrolSpeed();
-            return Patrol(); // Go back to original position
+            return Patrol(); // Go back to patrolling
         }
         else
         {
@@ -79,23 +79,34 @@ public class EnemyActions
     public Vector2 Patrol()
     {
         enemy.GetComponent<NavMeshAgent2D>().speed = getEnemy().getPatrolSpeed();
-        if (toPatrolPosition && (Vector2) getEnemy().transform.position != getEnemy().patrolPosition)
-        {
-            return getEnemy().patrolPosition;
-        }
-        else if (toPatrolPosition && (Vector2) getEnemy().transform.position == getEnemy().patrolPosition)
-        {
 
-            return getEnemy().startPosition;
-        }
-        else if (!toPatrolPosition && (Vector2)getEnemy().transform.position != getEnemy().startPosition)
+        if((Vector2) getEnemy().transform.position != getEnemy().patrolPositions[patrolIndex])
         {
-            return getEnemy().startPosition;
+            return getEnemy().patrolPositions[patrolIndex];
         }
         else
         {
-            return getEnemy().patrolPosition;
+            setNextPatrolPosition();
+            return getEnemy().patrolPositions[patrolIndex];
         }
+        //if (toPatrolPosition && (Vector2) getEnemy().transform.position != getEnemy().patrolPosition)
+        //{
+        //    return getEnemy().patrolPosition;
+        //}
+        //else if (toPatrolPosition && (Vector2) getEnemy().transform.position == getEnemy().patrolPosition)
+        //{
+        //    toPatrolPosition = false;
+        //    return getEnemy().startPosition;
+        //}
+        //else if (!toPatrolPosition && (Vector2)getEnemy().transform.position != getEnemy().startPosition)
+        //{
+        //    return getEnemy().startPosition;
+        //}
+        //else
+        //{
+        //    toPatrolPosition = true;
+        //    return getEnemy().patrolPosition;
+        //}
     }
 
     public void MeleeAttack(int damage)
@@ -136,5 +147,17 @@ public class EnemyActions
     private EnemyController getEnemy()
     {
         return enemy.GetComponent<EnemyController>();
+    }
+
+    private void setNextPatrolPosition()
+    {
+        if(patrolIndex == getEnemy().patrolPositions.Count -1)
+        {
+            patrolIndex = 0;
+        }
+        else
+        {
+            patrolIndex++;
+        }
     }
 }

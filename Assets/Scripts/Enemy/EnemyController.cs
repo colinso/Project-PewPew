@@ -14,13 +14,13 @@ public partial class EnemyController : MonoBehaviour
     public int weaknessMultiplier;
     public float distanceFromPlayer;
     public Rigidbody2D rb;
-    public Vector2 startPosition;
-    public Vector2 patrolPosition;
     public GameObject player;
     public bool stopMovement;
     public EnemyConstants.EnemyTypes baddieType;
     public EnemyState state;
+    public NavMeshAgent2D navi;
     public float debuffTime = 5;
+	public List<Vector2> patrolPositions;
 
     protected Vector2 stopPosition;
     protected float freezeMultiplier = 0.75f;
@@ -30,14 +30,13 @@ public partial class EnemyController : MonoBehaviour
     protected float baseSpeed;
 
     private EnemyActions actions;
-    public NavMeshAgent2D navi;
 
     protected virtual void Awake()
     {
         navi = GetComponent<NavMeshAgent2D>();
         player = GameObject.FindGameObjectWithTag("Player");
         stopMovement = false;
-        startPosition = transform.position;
+		patrolPositions.Add(transform.position);
 
         actions = new EnemyActions(player, gameObject);
 
@@ -154,4 +153,5 @@ public partial class EnemyController : MonoBehaviour
     {
         return baseSpeed - 1.5f;
     }
+
 }
