@@ -35,45 +35,75 @@ public class LoadSceneManager : MonoBehaviour
         yield return new WaitUntil(() => blackScreenImage.color.a == 1);
         SceneManager.LoadScene("PlayerScene", LoadSceneMode.Additive);
         yield return new WaitUntil(() => SceneManager.GetSceneByName("PlayerScene").isLoaded);
-        CameraMovement.Instance.player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        CameraMovement.Instance.player = player;
         SceneManager.LoadScene(firstScene, LoadSceneMode.Additive);
-        currentScene = firstScene;
         yield return new WaitUntil(() => SceneManager.GetSceneByName(firstScene).isLoaded);
+        currentScene = firstScene;
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentScene));
+        placePlayer(player.GetComponent<PlayerController>(), 0);
         blackScreenAnimator.SetTrigger("FadeIn");
     }
-    public void Load(string sceneName)
+    public void Load(string sceneName, int doorNumber)
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         Debug.Log("Loading scene: " + sceneName);
-        StartCoroutine(FadeInAndLoad(sceneName));
+        StartCoroutine(FadeInAndLoad(sceneName, doorNumber));
     }
 
     public void Unload(string sceneName)
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
         Debug.Log("Unloading scene: " + sceneName);
         StartCoroutine(FadeOutAndUnload(sceneName));
     }
-    IEnumerator FadeInAndLoad(string sceneName)
+    IEnumerator FadeInAndLoad(string sceneName, int doorNumber)
     {
         string oldScene = currentScene;
-        yield return new WaitUntil(() => blackScreenImage.color.a == 1);
-        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
-        yield return new WaitUntil(() => SceneManager.GetSceneByName(sceneName).isLoaded);
-        currentScene = sceneName;
 
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
-        yield return new WaitUntil(() => !SceneManager.GetSceneByName(oldScene).isLoaded && SceneManager.GetSceneByName(sceneName).isLoaded);
-        blackScreenAnimator.SetTrigger("FadeIn");
+        yield return new WaitUntil(() => blackScreenImage.color.a == 1);
+
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+
+        yield return new WaitUntil(() => SceneManager.GetSceneByName(sceneName).isLoaded);
+
+        currentScene = sceneName;
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentScene));
+
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+        placePlayer(player.GetComponent<PlayerController>(), doorNumber);
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+
+        yield return new WaitUntil(() => !SceneManager.GetSceneByName(oldScene).isLoaded && SceneManager.GetSceneByName(sceneName).isLoaded);
+
+        blackScreenAnimator.SetTrigger("FadeIn");
         player.GetComponent<PlayerMovement>().enabled = true;
     }
     IEnumerator FadeOutAndUnload(string sceneName)
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+
         player.GetComponent<PlayerMovement>().enabled = false;
         blackScreenAnimator.SetTrigger("FadeOut");
+
         yield return new WaitUntil(() => blackScreenImage.color.a == 1);
+
+        player.GetComponent<PlayerController>().disableColliders();
+
         SceneManager.UnloadScene(sceneName);
+    }
+
+    private void placePlayer(PlayerController playerController, int doorNumber)
+    {
+        StartPoint[] startPoints = (StartPoint[])FindObjectsOfType(typeof(StartPoint));
+        Debug.Log("START POINTS " + startPoints);
+        Debug.Log(SceneManager.GetActiveScene().name);
+        foreach(StartPoint sp in startPoints)
+        {
+            if(sp.startPointNumber == doorNumber)
+            {
+                playerController.transform.position = sp.transform.position;
+            }
+        }
+        playerController.enableColliders();
     }
 }

@@ -6,21 +6,11 @@ using UnityEngine.SceneManagement;
 public class DoorController : MonoBehaviour
 {
     public string NextSceneName;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public int doorNumber;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         LoadSceneManager.Instance.Unload(LoadSceneManager.Instance.currentScene);
-        LoadSceneManager.Instance.Load(NextSceneName);
+        LoadSceneManager.Instance.Load(NextSceneName, doorNumber);
     }
 }

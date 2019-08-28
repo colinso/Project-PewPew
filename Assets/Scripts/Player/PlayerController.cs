@@ -45,5 +45,20 @@ public class PlayerController : MonoBehaviour
     {
         return health == 0;
     }
-
+    public void disableColliders()
+    {
+        Collider2D[] colliders = gameObject.GetComponents<Collider2D>();
+        foreach(Collider2D c in colliders)
+        {
+            c.enabled = false;
+        }
+    }
+    public void enableColliders()
+    {
+        Collider2D[] colliders = gameObject.GetComponents<Collider2D>();
+        foreach (Collider2D c in colliders)
+        {
+            c.enabled = true;
+        }
+    }
 }
