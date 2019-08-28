@@ -98,6 +98,9 @@ public partial class EnemyController : MonoBehaviour
             case WeaponController.energyTypes.Kinetic:
                 DamangeKinetic(initalDamage);
                 break;
+            case WeaponController.energyTypes.Explosion:
+                // Explosion effect?
+                break;
         }
 
 

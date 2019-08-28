@@ -7,7 +7,8 @@ public class WeaponController : MonoBehaviour
 	public Transform firePoint;
 	public GameObject player;
 	public GameObject projectilePrefab;
-	public enum energyTypes { Electric, Fire, Freeze, Kinetic };
+	public GameObject granadePrefab;
+    public enum energyTypes { Electric, Fire, Freeze, Kinetic, Explosion };
 	public energyTypes selectedType;
 
 	// Start is called before the first frame update
@@ -27,7 +28,10 @@ public class WeaponController : MonoBehaviour
 
         // Shoot
         Shoot();
-	}
+
+        // Throw Nades 
+        Throw();
+    }
 
 	void Shoot()
 	{
@@ -36,6 +40,14 @@ public class WeaponController : MonoBehaviour
             GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
             projectile.GetComponent<Projectile>().changeType(selectedType);
 
+        }
+    }
+
+    void Throw()
+    {
+        if (Input.GetKeyDown("g"))
+        {
+            GameObject granade = Instantiate(granadePrefab, firePoint.position, firePoint.rotation);
         }
     }
 
