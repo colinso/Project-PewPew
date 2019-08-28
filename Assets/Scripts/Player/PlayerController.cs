@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public int maxHealth;
     public int health;
     public int stamina;
     public int experience;

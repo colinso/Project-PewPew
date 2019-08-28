@@ -5,6 +5,7 @@ using UnityEngine;
 
 public partial class EnemyController : MonoBehaviour
 {
+    public int maxHealth = 100;
     public int health = 100;
     public GameObject ammoDrop;
     public int experienceDrop;
