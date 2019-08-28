@@ -10,7 +10,7 @@ public partial class EnemyController : MonoBehaviour
     public GameObject ammoDrop;
     public int experienceDrop;
     public int damage;
-    public WeaponController.energyTypes weakness;
+    public WeaponController.EnergyTypes weakness;
     public int weaknessMultiplier;
     public float distanceFromPlayer;
     public Rigidbody2D rb;
@@ -74,7 +74,7 @@ public partial class EnemyController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int initalDamage, WeaponController.energyTypes type)
+    public void TakeDamage(int initalDamage, WeaponController.EnergyTypes type)
     {
         if (weakness == type)
         {
@@ -87,21 +87,21 @@ public partial class EnemyController : MonoBehaviour
 
         switch (type)
         {
-            case WeaponController.energyTypes.Electric:
+            case WeaponController.EnergyTypes.Electric:
                 DamangeElectric();
                 break;
-            case WeaponController.energyTypes.Fire:
+            case WeaponController.EnergyTypes.Fire:
                 firePerTick = (int)(initalDamage * fireMultiplier);
                 InvokeRepeating("FireTick", 1f, 1f);
                 StartCoroutine(DamangeFire());
                 break;
-            case WeaponController.energyTypes.Freeze:
+            case WeaponController.EnergyTypes.Freeze:
                 StartCoroutine(DamangeFreeze());
                 break;
-            case WeaponController.energyTypes.Kinetic:
+            case WeaponController.EnergyTypes.Kinetic:
                 DamangeKinetic(initalDamage);
                 break;
-            case WeaponController.energyTypes.Explosion:
+            case WeaponController.EnergyTypes.Explosion:
                 // Explosion effect?
                 break;
         }

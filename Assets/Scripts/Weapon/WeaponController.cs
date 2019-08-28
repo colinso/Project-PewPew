@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponController : MonoBehaviour
+public partial class WeaponController : MonoBehaviour
 {
 	public Transform firePoint;
 	public GameObject player;
     public GameObject host;
 	public GameObject projectilePrefab;
 	public GameObject granadePrefab;
-    public enum energyTypes { Electric, Fire, Freeze, Kinetic, Explosion };
-	public energyTypes selectedType;
-    public float timerMax = 0.5f;
+    public float timerMax = 0.1f;
     public float timer;
+	public EnergyTypes selectedType;
 
 	// Start is called before the first frame update
 	void Start()
@@ -67,19 +66,19 @@ public class WeaponController : MonoBehaviour
 	{
 		if (Input.GetKeyDown("1"))
 		{
-			selectedType = energyTypes.Electric;
+			selectedType = EnergyTypes.Electric;
 		}
 		if (Input.GetKeyDown("2"))
 		{
-			selectedType = energyTypes.Fire;
+			selectedType = EnergyTypes.Fire;
 		}
 		if (Input.GetKeyDown("3"))
 		{
-			selectedType = energyTypes.Freeze;
+			selectedType = EnergyTypes.Freeze;
 		}
 		if (Input.GetKeyDown("4"))
 		{
-			selectedType = energyTypes.Kinetic;
+			selectedType = EnergyTypes.Kinetic;
 		}
 	}
 }

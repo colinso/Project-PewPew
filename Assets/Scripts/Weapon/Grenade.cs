@@ -14,7 +14,7 @@ public class Grenade : MonoBehaviour
 
     private HashSet<EnemyController> hitList;
     private Vector3 target;
-    private bool exploded;
+    private bool hit;
 
 	// Start is called before the first frame update
 	void Start()
@@ -38,17 +38,20 @@ public class Grenade : MonoBehaviour
         if (transform.position == target)
         {
             fuse -= Time.deltaTime;
-
+            print(fuse);
             if (fuse <= 0)
             {
                 circleCollider.enabled = true;
 
-                if (exploded)
+                if (hit)
                 {
                     foreach (var item in hitList)
                     {
-                        item.TakeDamage(damage, WeaponController.energyTypes.Explosion);
+                        item.TakeDamage(damage, WeaponController.EnergyTypes.Explosion);
                     }
+                }
+                if (fuse <= -0.05)
+                {
                     Destroy(gameObject);
                 }
 
@@ -63,7 +66,7 @@ public class Grenade : MonoBehaviour
         if (enemy != null)
         {
             hitList.Add(enemy);
-            exploded = true;
+            hit = true;
         }
     }
 

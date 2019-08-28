@@ -63,7 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePoint: {fileID: 0}
-  player: {fileID: 0}
+  player: {fileID: 463040235142245741, guid: 3e43479fa0cba48fd898dccd41702840, type: 3}
   speed: 10
   fuse: 1.5
   damage: 100

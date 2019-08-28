@@ -6,10 +6,10 @@ public class Projectile : MonoBehaviour
 {
     public Vector3 moveDirection;
     public Rigidbody2D rb;
-    public int damange = 20;
+    public int damage = 20;
     public float speed = 20f;
-    public WeaponController.energyTypes energyType;
     public bool isPlayer;
+    public WeaponController.EnergyTypes energyType;
     protected CircleCollider2D circleCollider;
     private bool hit;
     private HashSet<EnemyController> hitList;
@@ -47,8 +47,10 @@ public class Projectile : MonoBehaviour
             killDelay -= Time.deltaTime;
             if (killDelay <= 0)
             {
+                
                 foreach (var item in hitList)
                 {
+                    print(item);
                     item.TakeDamage(damange, energyType);
                 }
 
@@ -75,7 +77,7 @@ public class Projectile : MonoBehaviour
         {
             PlayerController player = collision.GetComponent<PlayerController>();
 
-            if(player != null)
+            if(player != null && energyType == WeaponController.EnergyTypes.Electric)
             {
                 circleCollider.enabled = true;
                 hit = true;
@@ -84,7 +86,7 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void changeType(WeaponController.energyTypes newType) {
+    public void changeType(WeaponController.EnergyTypes newType) {
         energyType = newType;
     }
 }
