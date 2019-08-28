@@ -14,7 +14,7 @@ public class EnemyActions
     private float originOffset = 0.5f;
     public float cooldown = 0.5f;
     public float detectionMax = 1.5f;
-    public int raycastDistance = 5;
+    public int raycastDistance = 10;
 
 
     public EnemyActions(GameObject player, GameObject enemy)
@@ -35,7 +35,7 @@ public class EnemyActions
 
     public Vector2 DetectAndChase(Vector2 position, Vector2 playerPosition)
     {
-        enemy.GetComponent<NavMeshAgent2D>().speed = getEnemy().getBaseSpeed();
+        getEnemy().setBaseSpeed();
         Vector2 direction = playerPosition - position;
         RaycastHit2D raycastHit = Physics2D.Raycast(position, direction, raycastDistance);
         
@@ -51,7 +51,7 @@ public class EnemyActions
         }
         else if ( (raycastHit.collider == null || raycastHit.collider.tag != "Player") && detectionTimer >= detectionMax) // Player is not detected and timer is run out
         {
-            enemy.GetComponent<NavMeshAgent2D>().speed = getEnemy().getPatrolSpeed();
+            getEnemy().setPatrolSpeed();
             return Patrol(); // Go back to patrolling
         }
         else
@@ -62,23 +62,29 @@ public class EnemyActions
 
     public Vector2 KeepDistance(Vector2 position, Vector2 playerPosition, float currentDistance)
     {
-        Debug.Log("Keeping Distance " + currentDistance);
+        getEnemy().setToPlayerSpeed();
         Vector2 direction = playerPosition - position;
-        RaycastHit2D raycastHit = Physics2D.Raycast(position, direction, raycastDistance);
+        RaycastHit2D raycastHit = Physics2D.Raycast(position, direction, 10);
 
-        Debug.Log(raycastHit.distance);
-        if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance < raycastDistance)
+        if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance < 5)
         {
-            Debug.Log("Get that distance");
-            return getDistantLocation(currentDistance, 5, position, playerPosition); 
+            MeleeAttack(1);
+            return getDistantLocation(raycastHit.distance, 5, position, playerPosition); 
         }
-        Debug.Log("Staying Put");
+        else if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance > 5)
+        {
+            if(raycastHit.distance < 6)
+            {
+                MeleeAttack(1);
+            }
+            return getPlayer().transform.position;
+        }
         return position;
     }
 
     public Vector2 Patrol()
     {
-        enemy.GetComponent<NavMeshAgent2D>().speed = getEnemy().getPatrolSpeed();
+        getEnemy().setPatrolSpeed();
 
         if((Vector2) getEnemy().transform.position != getEnemy().patrolPositions[patrolIndex])
         {
@@ -89,24 +95,6 @@ public class EnemyActions
             setNextPatrolPosition();
             return getEnemy().patrolPositions[patrolIndex];
         }
-        //if (toPatrolPosition && (Vector2) getEnemy().transform.position != getEnemy().patrolPosition)
-        //{
-        //    return getEnemy().patrolPosition;
-        //}
-        //else if (toPatrolPosition && (Vector2) getEnemy().transform.position == getEnemy().patrolPosition)
-        //{
-        //    toPatrolPosition = false;
-        //    return getEnemy().startPosition;
-        //}
-        //else if (!toPatrolPosition && (Vector2)getEnemy().transform.position != getEnemy().startPosition)
-        //{
-        //    return getEnemy().startPosition;
-        //}
-        //else
-        //{
-        //    toPatrolPosition = true;
-        //    return getEnemy().patrolPosition;
-        //}
     }
 
     public void MeleeAttack(int damage)
@@ -130,12 +118,22 @@ public class EnemyActions
         }
     }
 
-    private Vector2 getDistantLocation(float distance, float distanceWanted, Vector2 p1, Vector2 p2) // enemy, player position
+    private Vector2 getDistantLocation(float distance, float distanceWanted, Vector2 p, Vector2 p1) // p: enemy position; p1: player position
     {
-        float x = (float) ( 0.5 * ( (2 * 5) - distance + p2.x + p2.y + p1.x + p1.y ) );
-        float y = (float) ( 0.5 * ( 5 + p2.x + p2.y - p1.x - p1.y) );
-        Debug.Log("x " + x);
-        Debug.Log("y " + y);
+        float xNorm = 1;
+        float yNorm = 1;
+        if (p.x < p1.x)
+        {
+            xNorm = -1;
+        }
+        if (p.y < p1.y)
+        {
+            yNorm= -1;
+        }
+        float beta = distance - distanceWanted;
+        float x = p.x + ( xNorm * Mathf.Sqrt(Mathf.Pow(beta, 2) / ((Mathf.Pow(p.y - p1.y, 2) / Mathf.Pow(p.x - p1.x, 2)) + 1)) ); // Just trust me, it works
+        float y = p.y + ( yNorm * Mathf.Sqrt(Mathf.Pow(beta, 2) / ((Mathf.Pow(p.x - p1.x, 2) / Mathf.Pow(p.y - p1.y, 2)) + 1)) );
+
         return new Vector2(x, y);
     }
 

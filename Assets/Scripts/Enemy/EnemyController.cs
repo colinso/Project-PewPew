@@ -63,7 +63,6 @@ public partial class EnemyController : MonoBehaviour
 
     protected virtual void Move()
     {
-        Debug.Log(baddieType);
         if (baddieType == EnemyConstants.EnemyTypes.Baddie)
         {
             GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position);
@@ -144,14 +143,19 @@ public partial class EnemyController : MonoBehaviour
         CancelInvoke("FireTick");
     }
 
-    public float getBaseSpeed()
+    public void setBaseSpeed()
     {
-        return baseSpeed;
+        GetComponent<NavMeshAgent2D>().speed = baseSpeed;
     }
 
-    public float getPatrolSpeed()
+    public void setPatrolSpeed()
     {
-        return baseSpeed - 1.5f;
+        GetComponent<NavMeshAgent2D>().speed = baseSpeed - 1.5f;
+    }
+
+    public void setToPlayerSpeed()
+    {
+        GetComponent<NavMeshAgent2D>().speed = player.GetComponent<PlayerMovement>().moveSpeed;
     }
 
 }
