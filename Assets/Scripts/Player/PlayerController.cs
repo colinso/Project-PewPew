@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
         if(health - damageTaken <= 0)
         {
             health = 0;
+            Die();
         }
         else
         {
@@ -60,5 +62,9 @@ public class PlayerController : MonoBehaviour
         {
             c.enabled = true;
         }
+    }
+    void Die()
+    {
+        //LoadSceneManager.Instance.Reload();
     }
 }

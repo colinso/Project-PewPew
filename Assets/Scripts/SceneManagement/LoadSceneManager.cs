@@ -89,14 +89,13 @@ public class LoadSceneManager : MonoBehaviour
 
         player.GetComponent<PlayerController>().disableColliders();
 
-        SceneManager.UnloadScene(sceneName);
+        SceneManager.UnloadSceneAsync(sceneName);
     }
 
     private void placePlayer(PlayerController playerController, int doorNumber)
     {
         StartPoint[] startPoints = (StartPoint[])FindObjectsOfType(typeof(StartPoint));
-        Debug.Log("START POINTS " + startPoints);
-        Debug.Log(SceneManager.GetActiveScene().name);
+
         foreach(StartPoint sp in startPoints)
         {
             if(sp.startPointNumber == doorNumber)
@@ -105,5 +104,23 @@ public class LoadSceneManager : MonoBehaviour
             }
         }
         playerController.enableColliders();
+    }
+
+    public void Reload()
+    {
+        Debug.Log("Reloading scene");
+        StartCoroutine(ReloadScene());
+    }
+    IEnumerator ReloadScene()
+    {
+        print("DYING");
+        StartPoint[] startPoints = (StartPoint[])FindObjectsOfType(typeof(StartPoint));
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName("MainScene"));
+        yield return new WaitUntil(() => SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainScene"));
+        Unload(currentScene);
+        yield return new WaitUntil(() => !SceneManager.GetSceneByName(currentScene).isLoaded);
+        Load(currentScene, startPoints[0].startPointNumber);
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player.GetComponent<PlayerController>().health = player.GetComponent<PlayerController>().maxHealth;
     }
 }
