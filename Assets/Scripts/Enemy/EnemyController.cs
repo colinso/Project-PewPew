@@ -68,13 +68,13 @@ public partial class EnemyController : MonoBehaviour
         {
             case EnemyConstants.EnemyTypes.Baddie:
                 GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position, 1);
-                actions.MeleeAttack(damage);
+                actions.MeleeAttack(damage, 1.5f);
                 break;
             case EnemyConstants.EnemyTypes.DistanceBaddie:
                 GetComponent<NavMeshAgent2D>().destination = actions.KeepDistance(transform.position, player.transform.position, Vector2.Distance(transform.position, player.transform.position));
                 break;
             case EnemyConstants.EnemyTypes.Boss:
-                GetComponent<NavMeshAgent2D>().destination = actions.Shuffle();
+                GetComponent<NavMeshAgent2D>().destination = bossMoves();
                 break;
             default:
                 break;

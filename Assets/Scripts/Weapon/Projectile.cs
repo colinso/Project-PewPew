@@ -39,7 +39,7 @@ public class Projectile : MonoBehaviour
     private void FixedUpdate()
     {
         timer += Time.deltaTime;
-        if(timer >= 1)
+        if (timer >= 1)
         {
             timer = 0;
             Destroy(gameObject);
@@ -48,6 +48,7 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject);
             GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().takeDamage(5);
+            print("Player health: " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().health);
         }
         else if (!hit || !isPlayer)
         {
@@ -63,6 +64,7 @@ public class Projectile : MonoBehaviour
                     Debug.Log(item);
                     item.TakeDamage(damage, energyType);
                 }
+                Destroy(gameObject);
 
             }
         }
@@ -109,5 +111,15 @@ public class Projectile : MonoBehaviour
 
     public void changeType(WeaponController.EnergyTypes newEng) {
         energyType = newEng;
+    }
+
+    public void setSpeed(float speed)
+    {
+        this.speed = speed;
+    }
+
+    public void setDamage(int damage)
+    {
+        this.damage = damage;
     }
 }

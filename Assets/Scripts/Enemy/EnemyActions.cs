@@ -17,6 +17,7 @@ public class EnemyActions
     public float cooldown = 0.5f;
     public float detectionMax = 1.5f;
     public float shotTimerMax = 1f;
+    public float bossShotTimerMax = 0.2f;
     public float shotTimer;
     public int raycastDistance;
 
@@ -48,31 +49,34 @@ public class EnemyActions
 
     public Vector2 DetectAndChase(Vector2 position, Vector2 playerPosition, int distanceFromPlayer)
     {
-        getEnemy().setBaseSpeed();
+        if(distanceFromPlayer > 1)
+        {
+            getEnemy().setBaseSpeed();
+        }
+        else
+        {
+            getEnemy().setToPlayerSpeed();
+        }
         Vector2 direction = playerPosition - position;
         RaycastHit2D raycastHit = Physics2D.Raycast(position, direction, raycastDistance);
         
         if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance > distanceFromPlayer) // Player is detected between raycast distance and 1
         {
-            Debug.Log("Chase player");
             detectionTimer = 0;
             return playerPosition; // Chase player
         }
         else if( (raycastHit.collider == null || raycastHit.collider.tag != "Player") && detectionTimer < detectionMax) // Player is not detected within range, but enemy can still chase
         {
-            Debug.Log("Keep chasing player, but increase timer");
             detectionTimer += Time.deltaTime; // Keep chasing player, but increase timer
             return playerPosition;
         }
         else if ( (raycastHit.collider == null || raycastHit.collider.tag != "Player") && detectionTimer >= detectionMax) // Player is not detected and timer is run out
         {
-            Debug.Log("Go back to patrolling");
             getEnemy().setPatrolSpeed();
             return Patrol(); // Go back to patrolling
         }
         else
         {
-            Debug.Log("When in doubt, stay put");
             return position; // When in doubt, stay put
         }
     }
@@ -103,7 +107,18 @@ public class EnemyActions
         {
             shotTimer = 0;
             WeaponController weapon = enemy.GetComponentInChildren<WeaponController>();
-            weapon.ShootEnemyWeapon();
+            weapon.ShootEnemyWeapon(false);
+        }
+    }
+
+    public void bossFireGun()
+    {
+        shotTimer += Time.deltaTime;
+        if (shotTimer >= bossShotTimerMax)
+        {
+            shotTimer = 0;
+            WeaponController weapon = enemy.GetComponentInChildren<WeaponController>();
+            weapon.ShootEnemyWeapon(true);
         }
     }
 
@@ -145,10 +160,10 @@ public class EnemyActions
         }
     }
 
-    public void MeleeAttack(int damage)
+    public void MeleeAttack(int damage, float distanceWanted)
     {
         attackTimer += Time.deltaTime;
-        if (Vector2.Distance(getEnemy().transform.position, getPlayer().transform.position) <= 1.5 && (attackTimer >= cooldown || firstAttack))
+        if (Vector2.Distance(getEnemy().transform.position, getPlayer().transform.position) <= distanceWanted && (attackTimer >= cooldown || firstAttack))
         {
             inflictDamage(damage);
             Debug.Log(player.GetComponent<PlayerController>().health);
