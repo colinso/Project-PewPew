@@ -5,7 +5,7 @@ using UnityEngine;
 public class GrappleHook : MonoBehaviour
 {
     public float distance = 5f;
-    public float timeout = .1f;
+    public float timeout = 1f;
     public LineRenderer lineSprite;
 
     Vector3 targetPos;
@@ -28,10 +28,12 @@ public class GrappleHook : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            targetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            targetPos.z = 0;
-            hit = Physics2D.Raycast(transform.position, targetPos - transform.position, distance);
-            if(hit.collider != null)
+            var mousePos = Input.mousePosition;
+            mousePos.z = 10;
+            Vector3 moveDirection = (Camera.main.ScreenToWorldPoint(mousePos) - transform.position);
+            moveDirection.z = 0;
+            hit = Physics2D.Raycast(transform.position, moveDirection, distance);
+            if (hit.collider != null)
             {
                 grappling = true;
                 timeGrappling = timeout;
@@ -65,6 +67,14 @@ public class GrappleHook : MonoBehaviour
     private void OnCollisionStay2D(Collision2D collision)
     {
         resetLine();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<EnemyController>() != null)
+        {
+            resetLine();
+        }
     }
 
     private void shootSprite()

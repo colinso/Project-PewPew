@@ -10,7 +10,10 @@ public class DoorController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        LoadSceneManager.Instance.Unload(LoadSceneManager.Instance.currentScene);
-        LoadSceneManager.Instance.Load(NextSceneName, doorNumber);
+        if (collider.GetComponent<PlayerController>())
+        {
+            LoadSceneManager.Instance.Unload(LoadSceneManager.Instance.currentScene);
+            LoadSceneManager.Instance.Load(NextSceneName, doorNumber);
+        }
     }
 }

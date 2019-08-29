@@ -2,20 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponController : MonoBehaviour
+public partial class WeaponController : MonoBehaviour
 {
-	public Transform firePoint;
-	public GameObject player;
+    public Transform firePoint;
+    public GameObject player;
     public GameObject host;
-	public GameObject projectilePrefab;
-	public GameObject granadePrefab;
-    public enum energyTypes { Electric, Fire, Freeze, Kinetic, Explosion };
-	public energyTypes selectedType;
-    public float timerMax = 0.5f;
+    public float timerMax = 0.1f;
     public float timer;
+    public GameObject granadePrefab;
 
-	// Start is called before the first frame update
-	void Start()
+    // Weapon Types
+    public GameObject pistolPrefab;
+    public GameObject shotgunPrefab;
+
+    public EnergyTypes energyType;
+    public WeaponTypes weaponType;
+
+    public int pelletSize = 4;
+
+
+    // Start is called before the first frame update
+    void Start()
 	{
         timer = 0;
 	}
@@ -31,26 +38,47 @@ public class WeaponController : MonoBehaviour
         {
             // Change energy type
             ChangeEnergyType();
-            
+
             // Shoot
             Shoot();
 
-            // Throw Nades 
+            // Throw Nades
             Throw();
         }
         else if(timer >= timerMax)
         {
             timer = 0;
-            Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+            Instantiate(pistolPrefab, firePoint.position, firePoint.rotation);
         }
     }
 
-	void Shoot()
+    public virtual void Shoot()
 	{
         if(Input.GetMouseButtonDown(0))
         {
-            GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-            projectile.GetComponent<Projectile>().changeType(selectedType);
+            GameObject projectile_1;
+            switch (weaponType)
+            {
+                case WeaponTypes.Pistol:
+                    projectile_1 = Instantiate(pistolPrefab, firePoint.position, firePoint.rotation);
+                    projectile_1.GetComponent<Projectile>().changeType(energyType);
+                    break;
+                case WeaponTypes.Shotgun:
+
+                    for (int i = 0; i < pelletSize; i++)
+                    {
+                        GameObject tmp = Instantiate(shotgunPrefab, firePoint.position, firePoint.rotation);
+                        tmp.GetComponent<Projectile>().changeType(energyType);
+                    }
+                    break;
+                case WeaponTypes.Minigun:
+
+                    //while (Input.GetMouseButton(0)) { 
+                    //    GameObject tmp = Instantiate(shotgunPrefab, firePoint.position, firePoint.rotation);
+                    //    tmp.GetComponent<Projectile>().changeType(energyType);
+                    //}
+                    break;
+            }
 
         }
     }
@@ -67,19 +95,19 @@ public class WeaponController : MonoBehaviour
 	{
 		if (Input.GetKeyDown("1"))
 		{
-			selectedType = energyTypes.Electric;
+            energyType = EnergyTypes.Electric;
 		}
 		if (Input.GetKeyDown("2"))
 		{
-			selectedType = energyTypes.Fire;
+			energyType = EnergyTypes.Fire;
 		}
 		if (Input.GetKeyDown("3"))
 		{
-			selectedType = energyTypes.Freeze;
+            energyType = EnergyTypes.Freeze;
 		}
 		if (Input.GetKeyDown("4"))
 		{
-			selectedType = energyTypes.Kinetic;
+            energyType = EnergyTypes.Kinetic;
 		}
 	}
 }
