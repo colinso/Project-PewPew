@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class BossController : EnemyController
 {
+    public const int xMin = -12;
+    public const int xMax = 12;
+    public const int yMin = -8;
+    public const int yMax = 8;
+
+    public GameObject EnemyPrefab1;
+    public GameObject EnemyPrefab2;
     public float cooldown = 2f;
     private EnemyActions actions;
-    enum BossStates { Shuffle, Chase, Shoot, ChangeType, Smash, Explosions, Spawn}
+    enum BossStates { Shuffle, Chase, Shoot, ChangeType, Spawn, Smash, Explosions}
     BossStates state;
     float chaseTimerMax = 2f;
     float chaseTimer;
@@ -16,6 +23,8 @@ public class BossController : EnemyController
     float smashTimer;
     float shootTimerMax = 3f;
     float shootTimer;
+    float spawnTimerMax = 2f;
+    float spawnTimer;
 
     protected override void Awake()
     {
@@ -26,6 +35,7 @@ public class BossController : EnemyController
         maxHealth = 5000;
         chaseTimer = 0;
         shuffleTimer = 0;
+        spawnTimer = 0;
         state = BossStates.Chase;
 
         actions = new EnemyActions(player, gameObject);
@@ -56,7 +66,7 @@ public class BossController : EnemyController
                     chaseTimer = 0;
                     actions.MeleeAttack(12, 8);
                     print("attack!");
-                    state = BossStates.Smash;
+                    state = BossStates.Shuffle;
                     break;
                 }
                 chaseTimer += Time.deltaTime;
@@ -105,6 +115,15 @@ public class BossController : EnemyController
                 }
                 state = BossStates.Shuffle;
                 break;
+            case BossStates.Spawn:
+                if(spawnTimer >= spawnTimerMax)
+                {
+                    spawnTimer = 0;
+                    randomSpawn();
+                    state = BossStates.Shuffle;
+                }
+                spawnTimer += Time.deltaTime;
+                break;
             default:
                 break;
         }
@@ -114,12 +133,27 @@ public class BossController : EnemyController
     private int getRandomAttack()
     {
         System.Random rand = new System.Random();
-        return rand.Next(1, 4);
+        return rand.Next(1, 5);
     }
 
     private int getRandomType()
     {
         System.Random rand = new System.Random();
         return rand.Next(0, 5);
+    }
+
+    private void randomSpawn()
+    {
+        //max x is 12, max y is 8
+        int xMin = -12;
+        int xMax = 12;
+        int yMin = -8;
+        int yMax = 8;
+        Vector2 pos = new Vector2(Random.Range(xMin, xMax), Random.Range(yMin, yMax));
+        Instantiate(EnemyPrefab1, pos, transform.rotation);
+        pos = new Vector2(Random.Range(xMin, xMax), Random.Range(yMin, yMax));
+        Instantiate(EnemyPrefab1, pos, transform.rotation);
+        pos = new Vector2(Random.Range(xMin, xMax), Random.Range(yMin, yMax));
+        Instantiate(EnemyPrefab2, pos, transform.rotation);
     }
 }
