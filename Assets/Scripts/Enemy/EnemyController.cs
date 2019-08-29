@@ -64,18 +64,20 @@ public partial class EnemyController : MonoBehaviour
 
     protected virtual void MoveAndAttack()
     {
-        if (baddieType == EnemyConstants.EnemyTypes.Baddie)
+        switch (baddieType)
         {
-            GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position, 8);
-            actions.MeleeAttack(damage);
-        }
-        else if (baddieType == EnemyConstants.EnemyTypes.DistanceBaddie)
-        {
-            GetComponent<NavMeshAgent2D>().destination = actions.KeepDistance(transform.position, player.transform.position, Vector2.Distance(transform.position, player.transform.position));
-        }
-        else if (baddieType == EnemyConstants.EnemyTypes.Boss)
-        {
-            GetComponent<NavMeshAgent2D>().destination = bossMoves();
+            case EnemyConstants.EnemyTypes.Baddie:
+                GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position, 1);
+                actions.MeleeAttack(damage);
+                break;
+            case EnemyConstants.EnemyTypes.DistanceBaddie:
+                GetComponent<NavMeshAgent2D>().destination = actions.KeepDistance(transform.position, player.transform.position, Vector2.Distance(transform.position, player.transform.position));
+                break;
+            case EnemyConstants.EnemyTypes.Boss:
+                GetComponent<NavMeshAgent2D>().destination = actions.Shuffle();
+                break;
+            default:
+                break;
         }
     }
 

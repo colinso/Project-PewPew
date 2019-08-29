@@ -15,26 +15,23 @@ public class BossController : EnemyController
         baddieType = EnemyConstants.EnemyTypes.Boss;
         damage = 20;
         health = 5000;
+        maxHealth = 5000;
 
         actions = new EnemyActions(player, gameObject);
         actions.SetDetectionDistance(50);
     }
 
-    private void FixedUpdate()
+    protected override Vector2 bossMoves()
     {
         switch (state)
         {
             case BossStates.Shuffle:
                 break;
             case BossStates.Chase:
-                actions.DetectAndChase(transform.position, player.transform.position, 50);
-                break;
+                return actions.DetectAndChase(transform.position, player.transform.position, 50);
             default:
                 break;
         }
+        return new Vector2();
     }
-
-    //protected override Vector2 bossMoves(){
-
-    //}
 }

@@ -6,12 +6,14 @@ public class EnemyActions
 {
     GameObject player;
     GameObject enemy;
+    private Vector2 shufflePosition;
     private float attackTimer;
     private float detectionTimer;
+    private bool shuffle;
     private bool firstAttack;
     private int patrolIndex;
-
     private float originOffset = 0.5f;
+
     public float cooldown = 0.5f;
     public float detectionMax = 1.5f;
     public float shotTimerMax = 1f;
@@ -27,8 +29,10 @@ public class EnemyActions
         detectionTimer = 0;
         shotTimer = 0;
         firstAttack = true;
+        shuffle = false;
         patrolIndex = 0;
         raycastDistance = 10;
+        shufflePosition = enemy.transform.position;
     }
 
     public Vector2 Follow(Vector2 position, int speed)
@@ -50,21 +54,25 @@ public class EnemyActions
         
         if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance > distanceFromPlayer) // Player is detected between raycast distance and 1
         {
+            Debug.Log("Chase player");
             detectionTimer = 0;
             return playerPosition; // Chase player
         }
         else if( (raycastHit.collider == null || raycastHit.collider.tag != "Player") && detectionTimer < detectionMax) // Player is not detected within range, but enemy can still chase
         {
+            Debug.Log("Keep chasing player, but increase timer");
             detectionTimer += Time.deltaTime; // Keep chasing player, but increase timer
             return playerPosition;
         }
         else if ( (raycastHit.collider == null || raycastHit.collider.tag != "Player") && detectionTimer >= detectionMax) // Player is not detected and timer is run out
         {
+            Debug.Log("Go back to patrolling");
             getEnemy().setPatrolSpeed();
             return Patrol(); // Go back to patrolling
         }
         else
         {
+            Debug.Log("When in doubt, stay put");
             return position; // When in doubt, stay put
         }
     }
@@ -97,6 +105,29 @@ public class EnemyActions
             WeaponController weapon = enemy.GetComponentInChildren<WeaponController>();
             weapon.ShootEnemyWeapon();
         }
+    }
+
+    public Vector2 Shuffle()
+    {
+        getEnemy().setToPlayerSpeed();
+        Debug.Log(shufflePosition);
+        if (shuffle && ( (Vector2) enemy.transform.position == shufflePosition ))
+        {
+            Debug.Log("Go right");
+            shuffle = !shuffle;
+            float x = getEnemy().transform.position.x + 1;
+            shufflePosition = new Vector2(x, getEnemy().transform.position.y);
+            return shufflePosition;
+        }
+        else if (!shuffle && (Vector2)enemy.transform.position == shufflePosition)
+        {
+            Debug.Log("Go left");
+            shuffle = !shuffle;
+            float x = getEnemy().transform.position.x - 1;
+            shufflePosition = new Vector2(x, getEnemy().transform.position.y);
+            return shufflePosition;
+        }
+        return shufflePosition;
     }
 
     public Vector2 Patrol()
