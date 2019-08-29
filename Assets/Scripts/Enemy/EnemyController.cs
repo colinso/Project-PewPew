@@ -21,6 +21,7 @@ public partial class EnemyController : MonoBehaviour
     public NavMeshAgent2D navi;
     public float debuffTime = 5;
 	public List<Vector2> patrolPositions;
+    public float healthDropChance = .7f;
 
     protected Vector2 stopPosition;
     protected float freezeMultiplier = 0.75f;
@@ -115,6 +116,8 @@ public partial class EnemyController : MonoBehaviour
 
     void Die()
     {
+        if(Random.value >= healthDropChance)
+            Instantiate((GameObject)Resources.Load("HealthGem", typeof(GameObject)), transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 
