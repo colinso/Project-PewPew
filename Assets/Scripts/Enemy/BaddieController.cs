@@ -12,7 +12,6 @@ public class BaddieController: EnemyController
         base.Awake();
         baddieType = EnemyConstants.EnemyTypes.Baddie;
         damage = 20;
-        health = 100;
     }
 
 }

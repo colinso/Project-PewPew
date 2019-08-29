@@ -55,6 +55,8 @@ public class Projectile : MonoBehaviour
             transform.position = transform.position + moveDirection.normalized * speed * Time.deltaTime;
         } else
         {
+            if (energyType != WeaponController.EnergyTypes.Electric)
+                Destroy(gameObject);
             killDelay -= Time.deltaTime;
             if (killDelay <= 0)
             {
@@ -65,7 +67,6 @@ public class Projectile : MonoBehaviour
                     item.TakeDamage(damage, energyType);
                 }
                 Destroy(gameObject);
-
             }
         }
     }
@@ -78,7 +79,7 @@ public class Projectile : MonoBehaviour
 
         if (isPlayer)
         {
-
+            print("isplayer");
             if (enemy != null)
             {
                 if (energyType == WeaponController.EnergyTypes.Electric)
@@ -96,7 +97,8 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            if(player != null)
+            print("not");
+            if (player != null)
             {
 
                 circleCollider.enabled = true;

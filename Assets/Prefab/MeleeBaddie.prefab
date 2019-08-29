@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  health: 50
+  health: 100
   ammoDrop: {fileID: 0}
   experienceDrop: 0
   damage: 0
@@ -184,6 +184,7 @@ MonoBehaviour:
   navi: {fileID: 0}
   debuffTime: 5
   patrolPositions: []
+  healthDropChance: 0.5
   cooldown: 2
 --- !u!95 &894898427278420872
 Animator:
