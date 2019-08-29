@@ -14,20 +14,7 @@ public class DistanceBaddieController: EnemyController
         baddieType = EnemyConstants.EnemyTypes.DistanceBaddie;
         damage = 10;
         health = 80;
-
-        actions = new EnemyActions(player, gameObject);
-
-        CircleCollider2D circleCollider = gameObject.AddComponent<CircleCollider2D>() as CircleCollider2D;
-        circleCollider.radius = 2f;
-        circleCollider.isTrigger = true;
     }
 
-    protected virtual void OnTriggerStay2D(Collider2D col)
-    {
-        if (col.gameObject == player)
-        {
-            print("Within Range, captain");
-        }
-    }
 
 }
