@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public int level;
     public GameObject currentWeapon;
     public List<GameObject> weapons;
+    public bool reloading;
 
     // Start is called before the first frame update
     void Start()
@@ -65,6 +66,10 @@ public class PlayerController : MonoBehaviour
     }
     void Die()
     {
-        //LoadSceneManager.Instance.Reload();
+        if (SceneManager.GetSceneByName("MainScene").isLoaded && !reloading)
+        {
+            reloading = true;
+            LoadSceneManager.Instance.Reload();
+        }
     }
 }

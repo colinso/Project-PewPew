@@ -73,7 +73,7 @@ public class LoadSceneManager : MonoBehaviour
         placePlayer(player.GetComponent<PlayerController>(), doorNumber);
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
 
-        yield return new WaitUntil(() => !SceneManager.GetSceneByName(oldScene).isLoaded && SceneManager.GetSceneByName(sceneName).isLoaded);
+        yield return new WaitUntil(() => ((!SceneManager.GetSceneByName(oldScene).isLoaded || player.GetComponent<PlayerController>().reloading == true) && SceneManager.GetSceneByName(sceneName).isLoaded));
 
         blackScreenAnimator.SetTrigger("FadeIn");
         player.GetComponent<PlayerMovement>().enabled = true;
@@ -88,8 +88,7 @@ public class LoadSceneManager : MonoBehaviour
         yield return new WaitUntil(() => blackScreenImage.color.a == 1);
 
         player.GetComponent<PlayerController>().disableColliders();
-
-        SceneManager.UnloadSceneAsync(sceneName);
+		SceneManager.UnloadSceneAsync(sceneName);
     }
 
     private void placePlayer(PlayerController playerController, int doorNumber)
@@ -113,14 +112,16 @@ public class LoadSceneManager : MonoBehaviour
     }
     IEnumerator ReloadScene()
     {
-        print("DYING");
         StartPoint[] startPoints = (StartPoint[])FindObjectsOfType(typeof(StartPoint));
         SceneManager.SetActiveScene(SceneManager.GetSceneByName("MainScene"));
         yield return new WaitUntil(() => SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainScene"));
         Unload(currentScene);
-        yield return new WaitUntil(() => !SceneManager.GetSceneByName(currentScene).isLoaded);
-        Load(currentScene, startPoints[0].startPointNumber);
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        player.GetComponent<PlayerController>().health = player.GetComponent<PlayerController>().maxHealth;
-    }
+		GameObject player = GameObject.FindGameObjectWithTag("Player");
+		yield return new WaitUntil(() => !SceneManager.GetSceneByName(currentScene).isLoaded);
+		player.GetComponent<PlayerController>().health = player.GetComponent<PlayerController>().maxHealth;
+		yield return new WaitUntil(() => player.GetComponent<PlayerController>().health == player.GetComponent<PlayerController>().maxHealth);
+		Load(currentScene, startPoints[0].startPointNumber);
+		yield return new WaitUntil(() => SceneManager.GetSceneByName(currentScene).isLoaded);
+		player.GetComponent<PlayerController>().reloading = false;
+	}
 }
