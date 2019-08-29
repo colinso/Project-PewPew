@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour
     protected float speed = 20f;
     protected CircleCollider2D circleCollider;
     private bool hit;
+    private float timer;
     private HashSet<EnemyController> hitList;
     private float killDelay = 0f;
 
@@ -24,6 +25,7 @@ public class Projectile : MonoBehaviour
 
         moveDirection = (Camera.main.ScreenToWorldPoint(mousePos) - transform.position);
         moveDirection.z = 0;
+        timer = 0;
 
         circleCollider = gameObject.AddComponent<CircleCollider2D>() as CircleCollider2D;
         circleCollider.radius = 1.5f;
@@ -34,8 +36,14 @@ public class Projectile : MonoBehaviour
         hitList = new HashSet<EnemyController>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        timer += Time.deltaTime;
+        if(timer >= 1)
+        {
+            timer = 0;
+            Destroy(gameObject);
+        }
         if (hit && !isPlayer)
         {
             Destroy(gameObject);
@@ -56,7 +64,6 @@ public class Projectile : MonoBehaviour
                     item.TakeDamage(damage, energyType);
                 }
 
-                Destroy(gameObject);
             }
         }
     }
@@ -93,6 +100,9 @@ public class Projectile : MonoBehaviour
                 circleCollider.enabled = true;
                 hit = true;
                 transform.position = player.transform.position;
+            } else if (!player && !enemy && !hit && !projectile)
+            {
+                Destroy(gameObject);
             }
         }
     }

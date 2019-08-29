@@ -14,7 +14,9 @@ public class EnemyActions
     private float originOffset = 0.5f;
     public float cooldown = 0.5f;
     public float detectionMax = 1.5f;
-    public int raycastDistance = 10;
+    public float shotTimerMax = 1f;
+    public float shotTimer;
+    public int raycastDistance;
 
 
     public EnemyActions(GameObject player, GameObject enemy)
@@ -23,8 +25,10 @@ public class EnemyActions
         this.enemy = enemy;
         attackTimer = 0;
         detectionTimer = 0;
+        shotTimer = 0;
         firstAttack = true;
         patrolIndex = 0;
+        raycastDistance = 10;
     }
 
     public Vector2 Follow(Vector2 position, int speed)
@@ -33,13 +37,18 @@ public class EnemyActions
         return Vector2.MoveTowards(position, playerPosition, speed * Time.deltaTime);
     }
 
-    public Vector2 DetectAndChase(Vector2 position, Vector2 playerPosition)
+    public void SetDetectionDistance(int distance)
+    {
+        raycastDistance = distance;
+    }
+
+    public Vector2 DetectAndChase(Vector2 position, Vector2 playerPosition, int distanceFromPlayer)
     {
         getEnemy().setBaseSpeed();
         Vector2 direction = playerPosition - position;
         RaycastHit2D raycastHit = Physics2D.Raycast(position, direction, raycastDistance);
         
-        if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance > 1) // Player is detected between raycast distance and 1
+        if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance > distanceFromPlayer) // Player is detected between raycast distance and 1
         {
             detectionTimer = 0;
             return playerPosition; // Chase player
@@ -68,13 +77,26 @@ public class EnemyActions
 
         if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance < 5)
         {
+            fireAtWill();
             return getDistantLocation(raycastHit.distance, 5, position, playerPosition); 
         }
         else if (raycastHit.collider != null && raycastHit.collider.tag == "Player" && raycastHit.distance > 5)
         {
+            fireAtWill();
             return getPlayer().transform.position;
         }
         return Patrol();
+    }
+
+    public void fireAtWill()
+    {
+        shotTimer += Time.deltaTime;
+        if(shotTimer >= shotTimerMax)
+        {
+            shotTimer = 0;
+            WeaponController weapon = enemy.GetComponentInChildren<WeaponController>();
+            weapon.ShootEnemyWeapon();
+        }
     }
 
     public Vector2 Patrol()

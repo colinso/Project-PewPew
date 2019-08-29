@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class EnemyConstants
 {
-    public enum EnemyTypes { Baddie, DistanceBaddie }
+    public enum EnemyTypes { Baddie, DistanceBaddie,
+        Boss
+    }
 
     static public int TypeToDistance(EnemyTypes type)
     {

@@ -65,12 +65,16 @@ public partial class EnemyController : MonoBehaviour
     {
         if (baddieType == EnemyConstants.EnemyTypes.Baddie)
         {
-            GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position);
+            GetComponent<NavMeshAgent2D>().destination = actions.DetectAndChase(transform.position, player.transform.position, 8);
             actions.MeleeAttack(damage);
         }
         else if (baddieType == EnemyConstants.EnemyTypes.DistanceBaddie)
         {
             GetComponent<NavMeshAgent2D>().destination = actions.KeepDistance(transform.position, player.transform.position, Vector2.Distance(transform.position, player.transform.position));
+        }
+        else if (baddieType == EnemyConstants.EnemyTypes.Boss)
+        {
+            GetComponent<NavMeshAgent2D>().destination = bossMoves();
         }
     }
 
@@ -158,6 +162,11 @@ public partial class EnemyController : MonoBehaviour
     public void setToPlayerSpeed()
     {
         GetComponent<NavMeshAgent2D>().speed = player.GetComponent<PlayerMovement>().moveSpeed;
+    }
+
+    protected virtual Vector2 bossMoves()
+    {
+        return new Vector2();
     }
 
 }

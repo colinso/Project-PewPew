@@ -45,11 +45,11 @@ public partial class WeaponController : MonoBehaviour
             // Throw Nades
             Throw();
         }
-        else if(timer >= timerMax)
-        {
-            timer = 0;
-            Instantiate(pistolPrefab, firePoint.position, firePoint.rotation);
-        }
+    }
+
+    public void ShootEnemyWeapon()
+    {
+        Instantiate(pistolPrefab, firePoint.position, firePoint.rotation);
     }
 
     public virtual void Shoot()
