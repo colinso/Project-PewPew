@@ -61,19 +61,23 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
-        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
-        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+        EnemyController enemy = collision.GetComponent<EnemyController>();
+        PlayerController player = collision.GetComponent<PlayerController>();
+        Projectile projectile = collision.GetComponent<Projectile>();
 
         if (isPlayer)
         {
 
-            if (enemy != null && energyType == WeaponController.EnergyTypes.Electric)
+            if (enemy != null)
             {
+                if (energyType == WeaponController.EnergyTypes.Electric)
+                {
+                    circleCollider.enabled = true;
+
+                }
                 hitList.Add(enemy);
-                circleCollider.enabled = true;
                 hit = true;
                 transform.position = enemy.transform.position;
             } else if (!player && !enemy && !hit && !projectile)
