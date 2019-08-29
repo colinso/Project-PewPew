@@ -57,8 +57,6 @@ public partial class WeaponController : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             GameObject projectile_1;
-            GameObject projectile_2;
-            GameObject projectile_3;
             switch (weaponType)
             {
                 case WeaponTypes.Pistol:
@@ -72,6 +70,13 @@ public partial class WeaponController : MonoBehaviour
                         GameObject tmp = Instantiate(shotgunPrefab, firePoint.position, firePoint.rotation);
                         tmp.GetComponent<Projectile>().changeType(energyType);
                     }
+                    break;
+                case WeaponTypes.Minigun:
+
+                    //while (Input.GetMouseButton(0)) { 
+                    //    GameObject tmp = Instantiate(shotgunPrefab, firePoint.position, firePoint.rotation);
+                    //    tmp.GetComponent<Projectile>().changeType(energyType);
+                    //}
                     break;
             }
 

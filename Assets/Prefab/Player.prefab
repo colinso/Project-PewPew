@@ -47,12 +47,17 @@ MonoBehaviour:
   firePoint: {fileID: 1545490714}
   player: {fileID: 0}
   host: {fileID: 463040235142245741}
-  projectilePrefab: {fileID: 8970546750298804746, guid: 4216e95bdc1844493a19110d02e47c25,
-    type: 3}
-  granadePrefab: {fileID: 0}
-  selectedType: 0
   timerMax: 0.1
   timer: 0
+  granadePrefab: {fileID: 6363551756729870681, guid: 5cd69fd277a6b4e928a0f76c9eaf1f7f,
+    type: 3}
+  pistolPrefab: {fileID: 8970546750298804746, guid: 4216e95bdc1844493a19110d02e47c25,
+    type: 3}
+  shotgunPrefab: {fileID: 6660204391004065021, guid: c91c534a586984beda91fedea8cb1ae5,
+    type: 3}
+  energyType: 3
+  weaponType: 0
+  pelletSize: 4
 --- !u!1 &1545490713
 GameObject:
   m_ObjectHideFlags: 0

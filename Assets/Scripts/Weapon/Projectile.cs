@@ -10,7 +10,7 @@ public class Projectile : MonoBehaviour
     protected WeaponController.EnergyTypes energyType;
     protected WeaponController.WeaponTypes weaponType;
     protected int damage = 20;
-    protected float speed = 5f;
+    protected float speed = 20f;
     protected CircleCollider2D circleCollider;
     private bool hit;
     private HashSet<EnemyController> hitList;

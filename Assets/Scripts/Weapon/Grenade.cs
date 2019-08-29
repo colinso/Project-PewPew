@@ -6,6 +6,7 @@ public class Grenade : MonoBehaviour
 {
     public Transform firePoint;
     public GameObject player;
+    public GameObject explosion;
     public float speed = 10f;
     public float fuse = 1.5f;
     public int damage = 100;
@@ -52,6 +53,7 @@ public class Grenade : MonoBehaviour
                 }
                 if (fuse <= -0.05)
                 {
+                    Instantiate(explosion, transform.position, transform.rotation);
                     Destroy(gameObject);
                 }
 

@@ -18,7 +18,7 @@ public class Shotgun : Projectile
         moveDirection.z = 0;
 
         damage = 6;
-        speed = 5;
+        speed = 25;
     }
 
     //public void Reset()
