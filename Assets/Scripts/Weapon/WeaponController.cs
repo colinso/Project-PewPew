@@ -12,13 +12,22 @@ public partial class WeaponController : MonoBehaviour
     public GameObject granadePrefab;
 
     // Weapon Types
+    public GameObject minigunPrefab;
     public GameObject pistolPrefab;
+    public GameObject sniperPrefab;
     public GameObject shotgunPrefab;
 
     public EnergyTypes energyType;
     public WeaponTypes weaponType;
 
     public int pelletSize = 4;
+
+    private float lastfired;      // The value of Time.time at the last firing moment
+
+    // The number of bullets fired per second
+    public float MinigunFireRate = 10;  
+    public float ShotgunFireRate = 3.5f; 
+    public float SniperFireRate = 1.5f;
 
 
     // Start is called before the first frame update
@@ -64,22 +73,42 @@ public partial class WeaponController : MonoBehaviour
                     projectile_1.GetComponent<Projectile>().changeType(energyType);
                     break;
                 case WeaponTypes.Shotgun:
-
-                    for (int i = 0; i < pelletSize; i++)
+                    if (Time.time - lastfired > 1 / ShotgunFireRate)
                     {
-                        GameObject tmp = Instantiate(shotgunPrefab, firePoint.position, firePoint.rotation);
-                        tmp.GetComponent<Projectile>().changeType(energyType);
+                        lastfired = Time.time;
+
+                        for (int i = 0; i < pelletSize; i++)
+                        {
+                            GameObject tmp = Instantiate(shotgunPrefab, firePoint.position, firePoint.rotation);
+                            tmp.GetComponent<Projectile>().changeType(energyType);
+                        }
                     }
                     break;
-                case WeaponTypes.Minigun:
+                case WeaponTypes.Sniper:
+                    if (Time.time - lastfired > 1 / SniperFireRate)
+                    {
+                        lastfired = Time.time;
 
-                    //while (Input.GetMouseButton(0)) { 
-                    //    GameObject tmp = Instantiate(shotgunPrefab, firePoint.position, firePoint.rotation);
-                    //    tmp.GetComponent<Projectile>().changeType(energyType);
-                    //}
+                        projectile_1 = Instantiate(sniperPrefab, firePoint.position, firePoint.rotation);
+                        projectile_1.GetComponent<Projectile>().changeType(energyType);
+                    }
                     break;
             }
 
+        }
+        if (Input.GetButton("Fire1"))
+        {
+            switch (weaponType)
+            {
+                case WeaponTypes.Minigun:
+                    if (Time.time - lastfired > 1 / MinigunFireRate)
+                    {
+                        lastfired = Time.time;
+                        GameObject tmp = Instantiate(minigunPrefab, firePoint.position, firePoint.rotation);
+                        tmp.GetComponent<Projectile>().changeType(energyType);
+                    }
+                    break;
+            }
         }
     }
 
