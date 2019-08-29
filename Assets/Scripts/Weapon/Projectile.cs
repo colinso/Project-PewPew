@@ -83,8 +83,6 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            PlayerController player = collision.GetComponent<PlayerController>();
-
             if(player != null)
             {
 
