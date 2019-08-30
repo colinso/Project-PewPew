@@ -21,11 +21,13 @@ public partial class WeaponController : MonoBehaviour
     public WeaponTypes weaponType;
 
     public int pelletSize = 4;
+    public int nadeCount = 4;
 
     private float lastfired;      // The value of Time.time at the last firing moment
 
     // The number of bullets fired per second
-    public float MinigunFireRate = 10;  
+    public float GrenadeFireRate = 0.5f;  
+    public float MinigunFireRate = 10f;
     public float ShotgunFireRate = 3.5f; 
     public float SniperFireRate = 1.5f;
 
@@ -121,7 +123,12 @@ public partial class WeaponController : MonoBehaviour
     {
         if (Input.GetKeyDown("g"))
         {
-            GameObject granade = Instantiate(granadePrefab, firePoint.position, firePoint.rotation);
+            if (Time.time - lastfired > 1 / GrenadeFireRate && nadeCount > 0)
+            {
+                lastfired = Time.time;
+                --nadeCount;
+                Instantiate(granadePrefab, firePoint.position, firePoint.rotation);
+            }
         }
     }
 
