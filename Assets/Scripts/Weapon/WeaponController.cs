@@ -27,9 +27,9 @@ public partial class WeaponController : MonoBehaviour
     private float lastfired;      // The value of Time.time at the last firing moment
 
     // The number of bullets fired per second
-    public float GrenadeFireRate = 0.5f;  
+    public float GrenadeFireRate = 0.5f;
     public float MinigunFireRate = 10f;
-    public float ShotgunFireRate = 3.5f; 
+    public float ShotgunFireRate = 3.5f;
     public float SniperFireRate = 1.5f;
 
 
@@ -138,28 +138,17 @@ public partial class WeaponController : MonoBehaviour
         }
     }
 
-    void ChangeEnergyType()
+  void ChangeEnergyType()
 	{
 
-        if (Input.GetKeyDown("1"))
-		{
-            energyType = EnergyTypes.Electric;
+    if (Input.GetKeyDown("q"))
+        {
+            energyType = EnergyNext(energyType);
         }
-		if (Input.GetKeyDown("2"))
-		{
-			energyType = EnergyTypes.Fire;
-        }
-		if (Input.GetKeyDown("3"))
-		{
-            energyType = EnergyTypes.Freeze;
-        }
-		if (Input.GetKeyDown("4"))
-		{
-            energyType = EnergyTypes.Kinetic;
-        }
-        SetPrimaryEneryTypeUI(energyType);
-    }
-    void SetPrimaryEneryTypeUI(EnergyTypes primary)
+    SetPrimaryEneryTypeUI(energyType);
+	}
+
+  void SetPrimaryEneryTypeUI(EnergyTypes primary)
     {
         GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
         if (cam.transform.Find("Electric") != null)
@@ -181,6 +170,22 @@ public partial class WeaponController : MonoBehaviour
                 freezeProj.color = new Color(freezeProj.color.r, freezeProj.color.g, freezeProj.color.b, 1f);
             else if (primary == EnergyTypes.Kinetic)
                 KineticProj.color = new Color(KineticProj.color.r, KineticProj.color.g, KineticProj.color.b, 1f);
+    }
+
+    EnergyTypes EnergyNext (EnergyTypes myEnum)
+    {
+        switch (myEnum)
+        {
+            case EnergyTypes.Electric:
+                return EnergyTypes.Fire;
+            case EnergyTypes.Fire:
+                return EnergyTypes.Freeze;
+            case EnergyTypes.Freeze:
+                return EnergyTypes.Kinetic;
+            case EnergyTypes.Kinetic:
+                return EnergyTypes.Electric;
+            default:
+                return EnergyTypes.Electric;
         }
     }
 }
