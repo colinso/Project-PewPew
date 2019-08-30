@@ -93,6 +93,7 @@ public class Projectile : MonoBehaviour
             {
                 if (energyType == WeaponController.EnergyTypes.Electric)
                 {
+                    print("Yeeeeet!");
                     circleCollider.enabled = true;
 					killDelayStarted = true;
 

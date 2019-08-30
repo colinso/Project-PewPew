@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class BossController : EnemyController
 {
-    public const int xMin = -12;
-    public const int xMax = 12;
-    public const int yMin = -8;
-    public const int yMax = 8;
+    public int xMin = -12;
+    public int xMax = 12;
+    public int yMin = -8;
+    public int yMax = 8;
 
     public GameObject EnemyPrefab1;
     public GameObject EnemyPrefab2;

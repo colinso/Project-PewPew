@@ -394,6 +394,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6660204391004065021, guid: c91c534a586984beda91fedea8cb1ae5,
         type: 3}
+    - target: {fileID: 712889383, guid: 3e43479fa0cba48fd898dccd41702840, type: 3}
+      propertyPath: shotClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 140b00dac11334e799ee4e2cb91ff12c, type: 3}
     - target: {fileID: 463040235142245735, guid: 3e43479fa0cba48fd898dccd41702840,
         type: 3}
       propertyPath: m_SortingLayerID

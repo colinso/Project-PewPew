@@ -22,14 +22,13 @@ public partial class WeaponController : MonoBehaviour
     public WeaponTypes weaponType;
 
     public int pelletSize = 4;
-    public int nadeCount = 4;
 
     private float lastfired;      // The value of Time.time at the last firing moment
 
     // The number of bullets fired per second
-    public float GrenadeFireRate = 0.5f;  
+    public float GrenadeFireRate = 0.5f;
     public float MinigunFireRate = 10f;
-    public float ShotgunFireRate = 3.5f; 
+    public float ShotgunFireRate = 3.5f;
     public float SniperFireRate = 1.5f;
 
 
@@ -51,6 +50,7 @@ public partial class WeaponController : MonoBehaviour
         {
             // Change energy type
             ChangeEnergyType();
+            ChangeWeaponType();
 
             // Shoot
             Shoot();
@@ -58,6 +58,7 @@ public partial class WeaponController : MonoBehaviour
             // Throw Nades
             Throw();
         }
+        ChangeWeaponText();
     }
 
     public void ShootEnemyWeapon(bool isBoss)
@@ -129,37 +130,25 @@ public partial class WeaponController : MonoBehaviour
     {
         if (Input.GetKeyDown("g"))
         {
-            if (Time.time - lastfired > 1 / GrenadeFireRate && nadeCount > 0)
+            if (Time.time - lastfired > 1 / GrenadeFireRate)
             {
                 lastfired = Time.time;
-                --nadeCount;
                 Instantiate(granadePrefab, firePoint.position, firePoint.rotation);
             }
         }
     }
 
-    void ChangeEnergyType()
+  void ChangeEnergyType()
 	{
 
-        if (Input.GetKeyDown("1"))
-		{
-            energyType = EnergyTypes.Electric;
-        }
-		if (Input.GetKeyDown("2"))
-		{
-			energyType = EnergyTypes.Fire;
-        }
-		if (Input.GetKeyDown("3"))
-		{
-            energyType = EnergyTypes.Freeze;
-        }
-		if (Input.GetKeyDown("4"))
-		{
-            energyType = EnergyTypes.Kinetic;
+        if (Input.GetKeyDown("q"))
+        {
+            energyType = EnergyNext(energyType);
         }
         SetPrimaryEneryTypeUI(energyType);
-    }
-    void SetPrimaryEneryTypeUI(EnergyTypes primary)
+	}
+
+  void SetPrimaryEneryTypeUI(EnergyTypes primary)
     {
         GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
         if (cam.transform.Find("Electric") != null)
@@ -181,6 +170,72 @@ public partial class WeaponController : MonoBehaviour
                 freezeProj.color = new Color(freezeProj.color.r, freezeProj.color.g, freezeProj.color.b, 1f);
             else if (primary == EnergyTypes.Kinetic)
                 KineticProj.color = new Color(KineticProj.color.r, KineticProj.color.g, KineticProj.color.b, 1f);
+        }
+	}
+
+	EnergyTypes EnergyNext (EnergyTypes myEnum)
+    {
+        switch (myEnum)
+        {
+            case EnergyTypes.Electric:
+                return EnergyTypes.Fire;
+            case EnergyTypes.Fire:
+                return EnergyTypes.Freeze;
+            case EnergyTypes.Freeze:
+                return EnergyTypes.Kinetic;
+            case EnergyTypes.Kinetic:
+                return EnergyTypes.Electric;
+            default:
+                return EnergyTypes.Electric;
+        }
+    }
+
+	void ChangeWeaponType()
+	{
+        if (Input.GetKeyDown("e"))
+        {
+            weaponType = WeaponNext(weaponType);
+        }
+	}
+
+    WeaponTypes WeaponNext(WeaponTypes myEnum)
+	{
+		switch (myEnum)
+		{
+			case WeaponTypes.Pistol:
+				return WeaponTypes.Shotgun;
+			case WeaponTypes.Shotgun:
+				return WeaponTypes.Minigun;
+			case WeaponTypes.Minigun:
+				return WeaponTypes.Sniper;
+			case WeaponTypes.Sniper:
+				return WeaponTypes.Pistol;
+			default:
+				return WeaponTypes.Pistol;
+		}
+	}
+
+    void ChangeWeaponText()
+    {
+        GameObject WeaponUI = GameObject.Find("WeaponText");
+        if (WeaponUI != null)
+        {
+            if (weaponType == WeaponTypes.Minigun)
+            {
+                WeaponUI.GetComponent<TMPro.TextMeshProUGUI>().text = "Minigun";
+            }
+            else if (weaponType == WeaponTypes.Pistol)
+            {
+                WeaponUI.GetComponent<TMPro.TextMeshProUGUI>().text = "Pistol";
+            }
+            else if (weaponType == WeaponTypes.Shotgun)
+            {
+                WeaponUI.GetComponent<TMPro.TextMeshProUGUI>().text = "Shotgun";
+            }
+            else if (weaponType == WeaponTypes.Sniper)
+            {
+                WeaponUI.GetComponent<TMPro.TextMeshProUGUI>().text = "Sniper";
+            }
         }
     }
 }
