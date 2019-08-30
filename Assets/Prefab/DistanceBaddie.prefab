@@ -81,13 +81,18 @@ MonoBehaviour:
   timer: 0
   granadePrefab: {fileID: 6363551756729870681, guid: 5cd69fd277a6b4e928a0f76c9eaf1f7f,
     type: 3}
+  minigunPrefab: {fileID: 0}
   pistolPrefab: {fileID: 606124067785507836, guid: 996449da0b0a14d569e7749126159e9c,
     type: 3}
+  sniperPrefab: {fileID: 0}
   shotgunPrefab: {fileID: 6660204391004065021, guid: c91c534a586984beda91fedea8cb1ae5,
     type: 3}
   energyType: 0
   weaponType: 0
   pelletSize: 4
+  MinigunFireRate: 10
+  ShotgunFireRate: 3.5
+  SniperFireRate: 1.5
 --- !u!1 &559979427119626359
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,6 +279,7 @@ MonoBehaviour:
   navi: {fileID: 0}
   debuffTime: 5
   patrolPositions: []
+  healthDropChance: 0.5
   cooldown: 2
 --- !u!114 &6716282030495990096
 MonoBehaviour:

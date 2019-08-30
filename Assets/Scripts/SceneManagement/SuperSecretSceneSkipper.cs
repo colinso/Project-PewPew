@@ -21,5 +21,15 @@ public class SuperSecretSceneSkipper : MonoBehaviour
             LoadSceneManager.Instance.Unload(LoadSceneManager.Instance.currentScene);
             LoadSceneManager.Instance.Load("Scene03", 2);
         }
+        else if (Input.GetKeyDown(KeyCode.M))
+        {
+            LoadSceneManager.Instance.Unload(LoadSceneManager.Instance.currentScene);
+            LoadSceneManager.Instance.Load("Scene04", 3);
+        }
+        else if (Input.GetKeyDown(KeyCode.Comma))
+        {
+            LoadSceneManager.Instance.Unload(LoadSceneManager.Instance.currentScene);
+            LoadSceneManager.Instance.Load("Scene05", 4);
+        }
     }
 }

@@ -31,20 +31,38 @@ public partial class EnemyController : MonoBehaviour
     protected float baseSpeed;
 
     private EnemyActions actions;
+    private ParticleSystem electicEffect;
+    private ParticleSystem fireEffect;
+    private ParticleSystem freezeEffect;
+    private ParticleSystem.EmissionModule electicEffectEm;
+    private ParticleSystem.EmissionModule fireEffectEm;
+    private ParticleSystem.EmissionModule freezeEffectEm;
 
     protected virtual void Awake()
     {
         navi = GetComponent<NavMeshAgent2D>();
         player = GameObject.FindGameObjectWithTag("Player");
         stopMovement = false;
-		patrolPositions.Add(transform.position);
+
+        patrolPositions.Add(transform.position);
 
         actions = new EnemyActions(player, gameObject);
 
         baseSpeed = GetComponent<NavMeshAgent2D>().speed;
         weaknessMultiplier = 2;
 
+        electicEffect = gameObject.transform.Find("ElectricEffect").gameObject.GetComponent<ParticleSystem>();
+        fireEffect = gameObject.transform.Find("FireEffect").gameObject.GetComponent<ParticleSystem>();
+        freezeEffect = gameObject.transform.Find("FrostEffect").gameObject.GetComponent<ParticleSystem>();
 
+        electicEffectEm = electicEffect.emission;
+        electicEffectEm.enabled = false;
+
+        fireEffectEm = fireEffect.emission;
+        fireEffectEm.enabled = false;
+
+        freezeEffectEm = freezeEffect.emission;
+        freezeEffectEm.enabled = false;
     }
 
     // Update is called once per frame
@@ -95,14 +113,17 @@ public partial class EnemyController : MonoBehaviour
         switch (type)
         {
             case WeaponController.EnergyTypes.Electric:
+                electicEffectEm.enabled = true;
                 DamangeElectric();
                 break;
             case WeaponController.EnergyTypes.Fire:
                 firePerTick = (int)(initalDamage * fireMultiplier);
                 InvokeRepeating("FireTick", 1f, 1f);
+                fireEffectEm.enabled = true;
                 StartCoroutine(DamangeFire());
                 break;
             case WeaponController.EnergyTypes.Freeze:
+                freezeEffectEm.enabled = true;
                 StartCoroutine(DamangeFreeze());
                 break;
             case WeaponController.EnergyTypes.Kinetic:
@@ -125,7 +146,7 @@ public partial class EnemyController : MonoBehaviour
 
     private void DamangeElectric()
     {
-        // Add electic damage filter
+        StartCoroutine(ElectricEffect());
     }
 
     private void FireTick()
@@ -145,13 +166,20 @@ public partial class EnemyController : MonoBehaviour
             GetComponent<NavMeshAgent2D>().speed = (int)(GetComponent<NavMeshAgent2D>().speed * freezeMultiplier);
         }
         yield return new WaitForSeconds(debuffTime);
+        freezeEffectEm.enabled = false ;
         GetComponent<NavMeshAgent2D>().speed = baseSpeed;
     }
 
     IEnumerator DamangeFire()
     {
         yield return new WaitForSeconds(debuffTime);
+        fireEffectEm.enabled = false;
         CancelInvoke("FireTick");
+    }
+    IEnumerator ElectricEffect()
+    {
+        yield return new WaitForSeconds(0.5f);
+        electicEffectEm.enabled = false;
     }
 
     public void setBaseSpeed()

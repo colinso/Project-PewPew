@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HealthDrop : MonoBehaviour
 {
-    int health = 10;
+    public int health = 10;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

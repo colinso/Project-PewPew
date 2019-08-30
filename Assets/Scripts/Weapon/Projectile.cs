@@ -55,17 +55,18 @@ public class Projectile : MonoBehaviour
             transform.position = transform.position + moveDirection.normalized * speed * Time.deltaTime;
         } else
         {
+            if (energyType != WeaponController.EnergyTypes.Electric)
+                Destroy(gameObject);
             killDelay -= Time.deltaTime;
             if (killDelay <= 0)
             {
 
                 foreach (var item in hitList)
                 {
-                    Debug.Log(item);
+                    Debug.Log(energyType);
                     item.TakeDamage(damage, energyType);
                 }
                 Destroy(gameObject);
-
             }
         }
     }
@@ -78,7 +79,7 @@ public class Projectile : MonoBehaviour
 
         if (isPlayer)
         {
-
+            print("isplayer");
             if (enemy != null)
             {
                 if (energyType == WeaponController.EnergyTypes.Electric)
@@ -96,7 +97,8 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            if(player != null)
+            print("not");
+            if (player != null)
             {
 
                 circleCollider.enabled = true;
@@ -111,6 +113,32 @@ public class Projectile : MonoBehaviour
 
     public void changeType(WeaponController.EnergyTypes newEng) {
         energyType = newEng;
+
+        TrailRenderer trailRenderer = GetComponent<TrailRenderer>();
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>(); ;
+
+        switch (energyType)
+        {
+            case WeaponController.EnergyTypes.Electric:
+                trailRenderer.material.color = new Color(.85f, .185f, .194f);
+                spriteRenderer.color = new Color(.85f, .185f, .194f);
+                break;
+            case WeaponController.EnergyTypes.Fire:
+                trailRenderer.material.color = new Color(1f, 0.84f, 0.07f);
+                spriteRenderer.color = new Color(1f, 0.84f, 0.07f);
+                break;
+            case WeaponController.EnergyTypes.Freeze:
+                trailRenderer.material.color = new Color(0f, 0.8f, 1f);
+                spriteRenderer.color = new Color(0f, 0.8f, 1f);
+                break;
+            case WeaponController.EnergyTypes.Kinetic:
+                trailRenderer.material.color = new Color(0.39f, 1f, 0.51f);
+                spriteRenderer.color = new Color(0.39f, 1f, 0.51f);
+                break;
+            default:
+                break;
+        }
+
     }
 
     public void setSpeed(float speed)
