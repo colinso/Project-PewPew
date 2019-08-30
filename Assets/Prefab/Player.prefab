@@ -61,7 +61,6 @@ MonoBehaviour:
   energyType: 3
   weaponType: 0
   pelletSize: 4
-  nadeCount: 4
   GrenadeFireRate: 0.5
   MinigunFireRate: 10
   ShotgunFireRate: 3.5
@@ -197,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2700824ae95645d3b3ecc419f99885f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ouchSound: {fileID: 8300000, guid: 1d29b76f381da452dacf734c7c6e4aaf, type: 3}
+  ouchSound: {fileID: 8300000, guid: 3fb089aa59d8b4c68b27efd108e50ed4, type: 3}
   deathSound: {fileID: 8300000, guid: 5d43955eb5a154a73afda4be9c89665b, type: 3}
   maxHealth: 0
   health: 0
