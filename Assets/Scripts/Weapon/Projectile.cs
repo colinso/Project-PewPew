@@ -92,9 +92,8 @@ public class Projectile : MonoBehaviour
                 }
                 hitList.Add(enemy);
                 hit = true;
-				gameObject.GetComponent<Renderer>().enabled = false;
-                //transform.position = enemy.transform.position;
-			} else if (!player && !enemy && !hit && !projectile)
+                transform.position = enemy.transform.position;
+            } else if (!player && !enemy && !hit && !projectile)
             {
                 Destroy(gameObject);
             }
@@ -119,7 +118,7 @@ public class Projectile : MonoBehaviour
         energyType = newEng;
 
         TrailRenderer trailRenderer = GetComponent<TrailRenderer>();
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>(); ;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
         switch (energyType)
         {

@@ -37,7 +37,8 @@ public partial class WeaponController : MonoBehaviour
     void Start()
 	{
         timer = 0;
-	}
+        SetPrimaryEneryTypeUI(energyType);
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -139,21 +140,47 @@ public partial class WeaponController : MonoBehaviour
 
     void ChangeEnergyType()
 	{
-		if (Input.GetKeyDown("1"))
+
+        if (Input.GetKeyDown("1"))
 		{
             energyType = EnergyTypes.Electric;
-		}
+        }
 		if (Input.GetKeyDown("2"))
 		{
 			energyType = EnergyTypes.Fire;
-		}
+        }
 		if (Input.GetKeyDown("3"))
 		{
             energyType = EnergyTypes.Freeze;
-		}
+        }
 		if (Input.GetKeyDown("4"))
 		{
             energyType = EnergyTypes.Kinetic;
-		}
-	}
+        }
+        SetPrimaryEneryTypeUI(energyType);
+    }
+    void SetPrimaryEneryTypeUI(EnergyTypes primary)
+    {
+        GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
+        if (cam.transform.Find("Electric") != null)
+        {
+            SpriteRenderer electricProj = cam.transform.Find("Electric").gameObject.GetComponent<SpriteRenderer>();
+            SpriteRenderer fireProj = cam.transform.Find("Fire").gameObject.GetComponent<SpriteRenderer>();
+            SpriteRenderer freezeProj = cam.transform.Find("Freeze").gameObject.GetComponent<SpriteRenderer>();
+            SpriteRenderer KineticProj = cam.transform.Find("Kinetic").gameObject.GetComponent<SpriteRenderer>();
+            electricProj.color = new Color(electricProj.color.r, electricProj.color.g, electricProj.color.b, .3f);
+            fireProj.color = new Color(fireProj.color.r, fireProj.color.g, fireProj.color.b, .3f);
+            freezeProj.color = new Color(freezeProj.color.r, freezeProj.color.g, freezeProj.color.b, .3f);
+            KineticProj.color = new Color(KineticProj.color.r, KineticProj.color.g, KineticProj.color.b, .3f);
+
+            if (primary == EnergyTypes.Electric)
+                electricProj.color = new Color(electricProj.color.r, electricProj.color.g, electricProj.color.b, 1f);
+            else if (primary == EnergyTypes.Fire)
+                fireProj.color = new Color(fireProj.color.r, fireProj.color.g, fireProj.color.b, 1f);
+            else if (primary == EnergyTypes.Freeze)
+                freezeProj.color = new Color(freezeProj.color.r, freezeProj.color.g, freezeProj.color.b, 1f);
+            else if (primary == EnergyTypes.Kinetic)
+                KineticProj.color = new Color(KineticProj.color.r, KineticProj.color.g, KineticProj.color.b, 1f);
+        }
+    }
 }
