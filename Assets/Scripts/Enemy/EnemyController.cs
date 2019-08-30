@@ -114,8 +114,8 @@ public partial class EnemyController : MonoBehaviour
         switch (type)
         {
             case WeaponController.EnergyTypes.Electric:
-                //electricEffectEm.enabled = true;
-                //DamangeElectric();
+                electricEffectEm.enabled = true;
+                DamangeElectric();
                 break;
             case WeaponController.EnergyTypes.Fire:
                 firePerTick = (int)(initalDamage * fireMultiplier);

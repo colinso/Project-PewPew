@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ouchSound: {fileID: 8300000, guid: 1d29b76f381da452dacf734c7c6e4aaf, type: 3}
+  deathSound: {fileID: 8300000, guid: 5d43955eb5a154a73afda4be9c89665b, type: 3}
   maxHealth: 0
   health: 0
   stamina: 0

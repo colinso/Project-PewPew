@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public AudioClip ouchSound;
+    public AudioClip deathSound;
     public int maxHealth;
     public int health;
     public int stamina;
@@ -71,6 +72,7 @@ public class PlayerController : MonoBehaviour
     }
     void Die()
     {
+        AudioSource.PlayClipAtPoint(deathSound, transform.position);
         if (SceneManager.GetSceneByName("MainScene").isLoaded && !reloading)
         {
             reloading = true;
