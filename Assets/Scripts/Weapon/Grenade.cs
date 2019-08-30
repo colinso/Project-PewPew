@@ -20,7 +20,9 @@ public class Grenade : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-        target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = 10;
+        target = Camera.main.ScreenToWorldPoint(mousePos);
         target.z = transform.position.z;
 
         circleCollider = gameObject.AddComponent<CircleCollider2D>() as CircleCollider2D;

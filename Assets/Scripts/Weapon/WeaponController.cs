@@ -58,7 +58,6 @@ public partial class WeaponController : MonoBehaviour
             // Throw Nades
             Throw();
         }
-        ChangeWeaponText();
     }
 
     public void ShootEnemyWeapon(bool isBoss)
@@ -214,28 +213,4 @@ public partial class WeaponController : MonoBehaviour
 				return WeaponTypes.Pistol;
 		}
 	}
-
-    void ChangeWeaponText()
-    {
-        GameObject WeaponUI = GameObject.Find("WeaponText");
-        if (WeaponUI != null)
-        {
-            if (weaponType == WeaponTypes.Minigun)
-            {
-                WeaponUI.GetComponent<TMPro.TextMeshProUGUI>().text = "Minigun";
-            }
-            else if (weaponType == WeaponTypes.Pistol)
-            {
-                WeaponUI.GetComponent<TMPro.TextMeshProUGUI>().text = "Pistol";
-            }
-            else if (weaponType == WeaponTypes.Shotgun)
-            {
-                WeaponUI.GetComponent<TMPro.TextMeshProUGUI>().text = "Shotgun";
-            }
-            else if (weaponType == WeaponTypes.Sniper)
-            {
-                WeaponUI.GetComponent<TMPro.TextMeshProUGUI>().text = "Sniper";
-            }
-        }
-    }
 }

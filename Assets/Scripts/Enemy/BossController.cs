@@ -99,10 +99,10 @@ public class BossController : EnemyController
                 weakness = (WeaponController.EnergyTypes) getRandomType();
                 switch (weakness)
                 {
-                    case WeaponController.EnergyTypes.Electric:
+                    case WeaponController.EnergyTypes.Fire:
                         GetComponent<SpriteRenderer>().color = new Color(.85f, .185f, .194f);
                         break;
-                    case WeaponController.EnergyTypes.Fire:
+                    case WeaponController.EnergyTypes.Electric:
                         GetComponent<SpriteRenderer>().color = new Color(1f, 0.84f, 0.07f);
                         break;
                     case WeaponController.EnergyTypes.Freeze:

@@ -9,7 +9,7 @@ public class Sniper : Projectile
     {
         base.Start();
 
-        damage = 50;
+        damage = 55;
         speed = 40;
     }
 }

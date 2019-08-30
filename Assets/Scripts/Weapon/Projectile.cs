@@ -29,7 +29,7 @@ public class Projectile : MonoBehaviour
         timer = 0;
 
         circleCollider = gameObject.AddComponent<CircleCollider2D>() as CircleCollider2D;
-        circleCollider.radius = 10f;
+        circleCollider.radius = 1.5f;
         circleCollider.isTrigger = true;
         circleCollider.enabled = false;
         isPlayer = true;
@@ -129,11 +129,11 @@ public class Projectile : MonoBehaviour
 
         switch (energyType)
         {
-            case WeaponController.EnergyTypes.Electric:
+            case WeaponController.EnergyTypes.Fire:
                 trailRenderer.material.color = new Color(.85f, .185f, .194f);
                 spriteRenderer.color = new Color(.85f, .185f, .194f);
                 break;
-            case WeaponController.EnergyTypes.Fire:
+            case WeaponController.EnergyTypes.Electric:
                 trailRenderer.material.color = new Color(1f, 0.84f, 0.07f);
                 spriteRenderer.color = new Color(1f, 0.84f, 0.07f);
                 break;

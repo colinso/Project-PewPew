@@ -18,7 +18,7 @@ public class Shotgun : Projectile
 
         mousePos.x += Random.Range(-pelletSpread, pelletSpread);
         mousePos.y += Random.Range(-pelletSpread, pelletSpread);
-
+        mousePos.z = 10;
         moveDirection = (Camera.main.ScreenToWorldPoint(mousePos) - transform.position);
         moveDirection.z = 0;
 

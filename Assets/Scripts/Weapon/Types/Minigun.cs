@@ -10,13 +10,14 @@ public class Minigun : Projectile
         base.Start();
 
         var mousePos = Input.mousePosition;
+        mousePos.z = 10;
         mousePos.x += Random.Range(-25, 25);
         mousePos.y += Random.Range(-25, 25);
 
         moveDirection = (Camera.main.ScreenToWorldPoint(mousePos) - transform.position);
         moveDirection.z = 0;
 
-        damage = 5;
+        damage = 10;
         speed = 25;
     }
 

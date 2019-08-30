@@ -148,6 +148,8 @@ public partial class EnemyController : MonoBehaviour
 
         if(Random.value >= healthDropChance)
             Instantiate((GameObject)Resources.Load("HealthGem", typeof(GameObject)), transform.position, Quaternion.identity);
+        if (gameObject.GetComponent<BossController>())
+            LoadSceneManager.Instance.Unload("Scene05");
         Destroy(gameObject);
     }
 

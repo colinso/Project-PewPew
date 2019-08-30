@@ -72,9 +72,9 @@ public class PlayerController : MonoBehaviour
     }
     void Die()
     {
-        AudioSource.PlayClipAtPoint(deathSound, transform.position);
         if (SceneManager.GetSceneByName("MainScene").isLoaded && !reloading)
         {
+            AudioSource.PlayClipAtPoint(deathSound, transform.position);
             reloading = true;
             LoadSceneManager.Instance.Reload();
         }
