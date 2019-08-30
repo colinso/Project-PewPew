@@ -12,7 +12,6 @@ public class DistanceBaddieController: EnemyController
     {
         base.Awake();
         baddieType = EnemyConstants.EnemyTypes.DistanceBaddie;
-        damage = 10;
         health = 80;
     }
 

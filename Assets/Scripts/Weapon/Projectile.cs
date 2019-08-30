@@ -47,7 +47,7 @@ public class Projectile : MonoBehaviour
         if (hit && !isPlayer)
         {
             Destroy(gameObject);
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().takeDamage(5);
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().takeDamage(15);
             print("Player health: " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().health);
         }
         else if (!hit || !isPlayer)

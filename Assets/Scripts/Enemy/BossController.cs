@@ -15,13 +15,13 @@ public class BossController : EnemyController
     private EnemyActions actions;
     enum BossStates { Shuffle, Chase, Shoot, ChangeType, Spawn, Smash, Explosions}
     BossStates state;
-    float chaseTimerMax = 2f;
+    float chaseTimerMax = 3f;
     float chaseTimer;
-    float shuffleTimerMax = 1f;
+    float shuffleTimerMax = 2f;
     float shuffleTimer;
-    float smashTimerMax = 0.5f;
+    float smashTimerMax = 1.5f;
     float smashTimer;
-    float shootTimerMax = 3f;
+    float shootTimerMax = 2f;
     float shootTimer;
     float spawnTimerMax = 2f;
     float spawnTimer;
@@ -144,15 +144,9 @@ public class BossController : EnemyController
 
     private void randomSpawn()
     {
-        //max x is 12, max y is 8
-        int xMin = -12;
-        int xMax = 12;
-        int yMin = -8;
-        int yMax = 8;
         Vector2 pos = new Vector2(Random.Range(xMin, xMax), Random.Range(yMin, yMax));
         Instantiate(EnemyPrefab1, pos, transform.rotation);
-        pos = new Vector2(Random.Range(xMin, xMax), Random.Range(yMin, yMax));
-        Instantiate(EnemyPrefab1, pos, transform.rotation);
+
         pos = new Vector2(Random.Range(xMin, xMax), Random.Range(yMin, yMax));
         Instantiate(EnemyPrefab2, pos, transform.rotation);
     }

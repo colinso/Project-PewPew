@@ -62,7 +62,7 @@ public partial class WeaponController : MonoBehaviour
         if (isBoss)
         {
             projectile.GetComponent<Projectile>().setSpeed(29);
-            projectile.GetComponent<Projectile>().setDamage(4);
+            projectile.GetComponent<Projectile>().setDamage(2);
         }
     }
 
