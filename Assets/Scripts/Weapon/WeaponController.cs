@@ -61,6 +61,8 @@ public partial class WeaponController : MonoBehaviour
     public void ShootEnemyWeapon(bool isBoss)
     {
         GameObject projectile = Instantiate(pistolPrefab, firePoint.position, firePoint.rotation);
+        projectile.GetComponent<Projectile>().setSpeed(10);
+        projectile.GetComponent<Projectile>().setDamage(5);
         if (isBoss)
         {
             projectile.GetComponent<Projectile>().setSpeed(29);

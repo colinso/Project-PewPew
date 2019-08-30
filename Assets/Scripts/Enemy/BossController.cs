@@ -54,6 +54,7 @@ public class BossController : EnemyController
                     print("Get Random Attack");
                     //state = BossStates.ChangeType;
                     state = (BossStates)getRandomAttack();
+                    randomSpawn();
                     print("State: " + state);
                     break;
                 }

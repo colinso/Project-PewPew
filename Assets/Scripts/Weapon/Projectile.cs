@@ -89,8 +89,9 @@ public class Projectile : MonoBehaviour
                 }
                 hitList.Add(enemy);
                 hit = true;
-                transform.position = enemy.transform.position;
-            } else if (!player && !enemy && !hit && !projectile)
+				gameObject.GetComponent<Renderer>().enabled = false;
+                //transform.position = enemy.transform.position;
+			} else if (!player && !enemy && !hit && !projectile)
             {
                 Destroy(gameObject);
             }
