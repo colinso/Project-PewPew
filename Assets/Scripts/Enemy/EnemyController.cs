@@ -22,6 +22,7 @@ public partial class EnemyController : MonoBehaviour
     public float debuffTime = 5;
 	public List<Vector2> patrolPositions;
     public float healthDropChance = .7f;
+    public AudioClip ouchSound;
 
     protected Vector2 stopPosition;
     protected float freezeMultiplier = 0.75f;
@@ -31,10 +32,10 @@ public partial class EnemyController : MonoBehaviour
     protected float baseSpeed;
 
     private EnemyActions actions;
-    private ParticleSystem electicEffect;
+    private ParticleSystem electricEffect;
     private ParticleSystem fireEffect;
     private ParticleSystem freezeEffect;
-    private ParticleSystem.EmissionModule electicEffectEm;
+    private ParticleSystem.EmissionModule electricEffectEm;
     private ParticleSystem.EmissionModule fireEffectEm;
     private ParticleSystem.EmissionModule freezeEffectEm;
 
@@ -51,12 +52,12 @@ public partial class EnemyController : MonoBehaviour
         baseSpeed = GetComponent<NavMeshAgent2D>().speed;
         weaknessMultiplier = 2;
 
-        electicEffect = gameObject.transform.Find("ElectricEffect").gameObject.GetComponent<ParticleSystem>();
+        electricEffect = gameObject.transform.Find("ElectricEffect").gameObject.GetComponent<ParticleSystem>();
         fireEffect = gameObject.transform.Find("FireEffect").gameObject.GetComponent<ParticleSystem>();
         freezeEffect = gameObject.transform.Find("FrostEffect").gameObject.GetComponent<ParticleSystem>();
 
-        electicEffectEm = electicEffect.emission;
-        electicEffectEm.enabled = false;
+        electricEffectEm = electricEffect.emission;
+        electricEffectEm.enabled = false;
 
         fireEffectEm = fireEffect.emission;
         fireEffectEm.enabled = false;
@@ -113,8 +114,8 @@ public partial class EnemyController : MonoBehaviour
         switch (type)
         {
             case WeaponController.EnergyTypes.Electric:
-                electicEffectEm.enabled = true;
-                DamangeElectric();
+                //electricEffectEm.enabled = true;
+                //DamangeElectric();
                 break;
             case WeaponController.EnergyTypes.Fire:
                 firePerTick = (int)(initalDamage * fireMultiplier);
@@ -139,6 +140,11 @@ public partial class EnemyController : MonoBehaviour
 
     void Die()
     {
+        AudioSource.PlayClipAtPoint(ouchSound, transform.position);
+        electricEffectEm.enabled = false;
+        fireEffectEm.enabled = false;
+        freezeEffectEm.enabled = false;
+
         if(Random.value >= healthDropChance)
             Instantiate((GameObject)Resources.Load("HealthGem", typeof(GameObject)), transform.position, Quaternion.identity);
         Destroy(gameObject);
@@ -179,7 +185,7 @@ public partial class EnemyController : MonoBehaviour
     IEnumerator ElectricEffect()
     {
         yield return new WaitForSeconds(0.5f);
-        electicEffectEm.enabled = false;
+        electricEffectEm.enabled = false;
     }
 
     public void setBaseSpeed()

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    public AudioClip ouchSound;
     public int maxHealth;
     public int health;
     public int stamina;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     public void takeDamage(int damageTaken)
     {
+        AudioSource.PlayClipAtPoint(ouchSound, transform.position);
         if(health - damageTaken <= 0)
         {
             health = 0;

@@ -37,6 +37,7 @@ public class BossController : EnemyController
         shuffleTimer = 0;
         spawnTimer = 0;
         state = BossStates.Chase;
+        GetComponent<SpriteRenderer>().color = new Color(.85f, .185f, .194f);
 
         actions = new EnemyActions(player, gameObject);
         actions.SetDetectionDistance(50);
@@ -99,16 +100,16 @@ public class BossController : EnemyController
                 switch (weakness)
                 {
                     case WeaponController.EnergyTypes.Electric:
-                        GetComponent<SpriteRenderer>().color = Color.yellow;
+                        GetComponent<SpriteRenderer>().color = new Color(.85f, .185f, .194f);
                         break;
                     case WeaponController.EnergyTypes.Fire:
-                        GetComponent<SpriteRenderer>().color = Color.red;
+                        GetComponent<SpriteRenderer>().color = new Color(1f, 0.84f, 0.07f);
                         break;
                     case WeaponController.EnergyTypes.Freeze:
-                        GetComponent<SpriteRenderer>().color = Color.blue;
+                        GetComponent<SpriteRenderer>().color = new Color(0f, 0.8f, 1f);
                         break;
                     case WeaponController.EnergyTypes.Kinetic:
-                        GetComponent<SpriteRenderer>().color = Color.green;
+                        GetComponent<SpriteRenderer>().color = new Color(0.39f, 1f, 0.51f);
                         break;
                     case WeaponController.EnergyTypes.Explosion:
                         GetComponent<SpriteRenderer>().color = Color.grey;

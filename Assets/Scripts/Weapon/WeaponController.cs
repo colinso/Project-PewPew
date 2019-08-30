@@ -10,6 +10,7 @@ public partial class WeaponController : MonoBehaviour
     public float timerMax = 0.1f;
     public float timer;
     public GameObject granadePrefab;
+    public AudioClip shotClip;
 
     // Weapon Types
     public GameObject minigunPrefab;
@@ -74,6 +75,7 @@ public partial class WeaponController : MonoBehaviour
 	{
         if(Input.GetMouseButtonDown(0))
         {
+            AudioSource.PlayClipAtPoint(shotClip, transform.position);
             GameObject projectile_1;
             switch (weaponType)
             {
@@ -113,6 +115,7 @@ public partial class WeaponController : MonoBehaviour
                     if (Time.time - lastfired > 1 / MinigunFireRate)
                     {
                         lastfired = Time.time;
+                        AudioSource.PlayClipAtPoint(shotClip, transform.position);
                         GameObject tmp = Instantiate(minigunPrefab, firePoint.position, firePoint.rotation);
                         tmp.GetComponent<Projectile>().changeType(energyType);
                     }

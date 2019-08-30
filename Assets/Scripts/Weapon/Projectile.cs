@@ -64,7 +64,10 @@ public class Projectile : MonoBehaviour
                 foreach (var item in hitList)
                 {
                     Debug.Log(energyType);
-                    item.TakeDamage(damage, energyType);
+                    if(item != null)
+					{
+                        item.TakeDamage(damage, energyType);
+					}
                 }
                 Destroy(gameObject);
             }
