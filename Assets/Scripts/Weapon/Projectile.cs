@@ -16,6 +16,7 @@ public class Projectile : MonoBehaviour
     private float timer;
     private HashSet<EnemyController> hitList;
     private float killDelay = 0f;
+	private bool killDelayStarted = false;
 
     // Start is called before the first frame update
     public virtual void Start()
@@ -28,7 +29,7 @@ public class Projectile : MonoBehaviour
         timer = 0;
 
         circleCollider = gameObject.AddComponent<CircleCollider2D>() as CircleCollider2D;
-        circleCollider.radius = 1.5f;
+        circleCollider.radius = 10f;
         circleCollider.isTrigger = true;
         circleCollider.enabled = false;
         isPlayer = true;
@@ -39,15 +40,20 @@ public class Projectile : MonoBehaviour
     private void FixedUpdate()
     {
         timer += Time.deltaTime;
-        if (timer >= 1)
+		if (killDelayStarted)
+		{
+			print("Kill delay! " + killDelay);
+
+		}
+		if (timer >= 1)
         {
             timer = 0;
-            Destroy(gameObject);
-        }
+			Destroy(gameObject);
+		}
         if (hit && !isPlayer)
         {
-            Destroy(gameObject);
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().takeDamage(15);
+			Destroy(gameObject);
+			GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().takeDamage(15);
             print("Player health: " + GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().health);
         }
         else if (!hit || !isPlayer)
@@ -56,8 +62,8 @@ public class Projectile : MonoBehaviour
         } else
         {
             if (energyType != WeaponController.EnergyTypes.Electric)
-                Destroy(gameObject);
-            killDelay -= Time.deltaTime;
+				Destroy(gameObject);
+			killDelay -= Time.deltaTime;
             if (killDelay <= 0)
             {
 
@@ -69,8 +75,8 @@ public class Projectile : MonoBehaviour
                         item.TakeDamage(damage, energyType);
 					}
                 }
-                Destroy(gameObject);
-            }
+				//Destroy(gameObject);
+			}
         }
     }
 
@@ -80,34 +86,34 @@ public class Projectile : MonoBehaviour
         PlayerController player = collision.GetComponent<PlayerController>();
         Projectile projectile = collision.GetComponent<Projectile>();
 
+		print(collision.name);
         if (isPlayer)
         {
-            print("isplayer");
             if (enemy != null)
             {
                 if (energyType == WeaponController.EnergyTypes.Electric)
                 {
                     circleCollider.enabled = true;
+					killDelayStarted = true;
 
-                }
+				}
                 hitList.Add(enemy);
                 hit = true;
-                //transform.position = enemy.transform.position;
-            } else if (!player && !enemy && !hit && !projectile)
+				//transform.position = enemy.transform.position;
+			} else if (!player && !enemy && !hit && !projectile)
             {
                 Destroy(gameObject);
             }
         }
         else
         {
-            print("not");
             if (player != null)
             {
 
                 circleCollider.enabled = true;
                 hit = true;
-                transform.position = player.transform.position;
-            } else if (!player && !enemy && !hit && !projectile)
+				//transform.position = player.transform.position;
+			} else if (!player && !enemy && !hit && !projectile)
             {
                 Destroy(gameObject);
             }

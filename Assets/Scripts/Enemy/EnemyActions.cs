@@ -49,7 +49,7 @@ public class EnemyActions
 
     public Vector2 DetectAndChase(Vector2 position, Vector2 playerPosition, int distanceFromPlayer)
     {
-        if(distanceFromPlayer > 1)
+        if(distanceFromPlayer <= 1)
         {
             getEnemy().setBaseSpeed();
         }
@@ -166,7 +166,7 @@ public class EnemyActions
         if (Vector2.Distance(getEnemy().transform.position, getPlayer().transform.position) <= distanceWanted && (attackTimer >= cooldown || firstAttack))
         {
             inflictDamage(damage);
-            Debug.Log(player.GetComponent<PlayerController>().health);
+            //Debug.Log(player.GetComponent<PlayerController>().health);
             attackTimer = 0f;
             firstAttack = false;
         }

@@ -124,6 +124,7 @@ public partial class EnemyController : MonoBehaviour
                 StartCoroutine(DamangeFire());
                 break;
             case WeaponController.EnergyTypes.Freeze:
+                print("Freeze sucker");
                 freezeEffectEm.enabled = true;
                 StartCoroutine(DamangeFreeze());
                 break;
@@ -167,6 +168,8 @@ public partial class EnemyController : MonoBehaviour
 
     IEnumerator DamangeFreeze()
     {
+        print("Speed is " + GetComponent<NavMeshAgent2D>().speed);
+        print("Base speed " + baseSpeed);
         if (GetComponent<NavMeshAgent2D>().speed == baseSpeed)
         {
             GetComponent<NavMeshAgent2D>().speed = (int)(GetComponent<NavMeshAgent2D>().speed * freezeMultiplier);
