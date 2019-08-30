@@ -22,7 +22,6 @@ public partial class WeaponController : MonoBehaviour
     public WeaponTypes weaponType;
 
     public int pelletSize = 4;
-    public int nadeCount = 4;
 
     private float lastfired;      // The value of Time.time at the last firing moment
 
@@ -51,6 +50,7 @@ public partial class WeaponController : MonoBehaviour
         {
             // Change energy type
             ChangeEnergyType();
+            ChangeWeaponType();
 
             // Shoot
             Shoot();
@@ -129,10 +129,9 @@ public partial class WeaponController : MonoBehaviour
     {
         if (Input.GetKeyDown("g"))
         {
-            if (Time.time - lastfired > 1 / GrenadeFireRate && nadeCount > 0)
+            if (Time.time - lastfired > 1 / GrenadeFireRate)
             {
                 lastfired = Time.time;
-                --nadeCount;
                 Instantiate(granadePrefab, firePoint.position, firePoint.rotation);
             }
         }
@@ -141,11 +140,11 @@ public partial class WeaponController : MonoBehaviour
   void ChangeEnergyType()
 	{
 
-    if (Input.GetKeyDown("q"))
+        if (Input.GetKeyDown("q"))
         {
             energyType = EnergyNext(energyType);
         }
-    SetPrimaryEneryTypeUI(energyType);
+        SetPrimaryEneryTypeUI(energyType);
 	}
 
   void SetPrimaryEneryTypeUI(EnergyTypes primary)
@@ -170,9 +169,10 @@ public partial class WeaponController : MonoBehaviour
                 freezeProj.color = new Color(freezeProj.color.r, freezeProj.color.g, freezeProj.color.b, 1f);
             else if (primary == EnergyTypes.Kinetic)
                 KineticProj.color = new Color(KineticProj.color.r, KineticProj.color.g, KineticProj.color.b, 1f);
-    }
+        }
+	}
 
-    EnergyTypes EnergyNext (EnergyTypes myEnum)
+	EnergyTypes EnergyNext (EnergyTypes myEnum)
     {
         switch (myEnum)
         {
@@ -188,4 +188,29 @@ public partial class WeaponController : MonoBehaviour
                 return EnergyTypes.Electric;
         }
     }
+
+	void ChangeWeaponType()
+	{
+        if (Input.GetKeyDown("e"))
+        {
+            weaponType = WeaponNext(weaponType);
+        }
+	}
+
+    WeaponTypes WeaponNext(WeaponTypes myEnum)
+	{
+		switch (myEnum)
+		{
+			case WeaponTypes.Pistol:
+				return WeaponTypes.Shotgun;
+			case WeaponTypes.Shotgun:
+				return WeaponTypes.Minigun;
+			case WeaponTypes.Minigun:
+				return WeaponTypes.Sniper;
+			case WeaponTypes.Sniper:
+				return WeaponTypes.Pistol;
+			default:
+				return WeaponTypes.Pistol;
+		}
+	}
 }
