@@ -179,7 +179,7 @@ MonoBehaviour:
   weaknessMultiplier: 0
   distanceFromPlayer: 0
   rb: {fileID: 3485391322399956606}
-  player: {fileID: 0}
+  player: {fileID: 463040235142245741, guid: 3e43479fa0cba48fd898dccd41702840, type: 3}
   stopMovement: 0
   baddieType: 0
   state: 0
@@ -187,6 +187,7 @@ MonoBehaviour:
   debuffTime: 5
   patrolPositions: []
   healthDropChance: 0.7
+  ouchSound: {fileID: 8300000, guid: 75cc35535eb6948a28c1251a11e26e08, type: 3}
   cooldown: 2
 --- !u!95 &6863589359913893925
 Animator:
